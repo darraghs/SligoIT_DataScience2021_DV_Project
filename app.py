@@ -57,11 +57,6 @@ app.layout = html.Div([
 
     html.Div(id='output_container', children=[]),
     html.Br(),
-    
-    app.layout = html.Div([
-        dl.Map(dl.TileLayer(), id="map", style={'width': '100%', 'height': '50vh'}),
-        html.Div(id="log")
-    ])
 
     dcc.Graph(id='crash_map', figure={}),
     html.Div(id='Coordinates',style={'display': 'none'})
