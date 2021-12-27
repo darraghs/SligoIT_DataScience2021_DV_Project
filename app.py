@@ -31,7 +31,8 @@ accident_2020_df=pd.read_csv(
     "data/dft-road-casualty-statistics-accident-2020.csv"
 )
 cleanDF(accident_2020_df)
-accident_2020_df
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/' )
 
