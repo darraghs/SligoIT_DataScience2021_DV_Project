@@ -72,6 +72,8 @@ app.layout = html.Div([
 def update_graph(option_slctd):
     print(option_slctd)
     print(type(option_slctd))
+    
+    token = open(".mapbox_token").read()
 
     container = "The year chosen by user was: {}".format(option_slctd)
 
@@ -82,16 +84,16 @@ def update_graph(option_slctd):
     # Plotly Express
     
     fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", 
-                        hover_data=["number_of_casualties", "number_of_vehicles"],
-                        color_discrete_sequence=["fuchsia"], zoom=3, height=300)
+                        hover_data=["speed_limit", "number_of_vehicles"],
+                        color="accident_severity", 
+                        zoom=4, height=800, width=600)
     
     
-    fig.update_mapboxes(center_lat=55, center_lon=-1.3, zoom=4)
-    fig.update_layout(mapbox_style="open-street-map")
+    fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
+    fig.update_mapboxes(center_lat=55, center_lon=-3.5)
     fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
     fig.update_layout(height=600)
-
-
+    
     return container, fig
 
 
