@@ -81,6 +81,11 @@ def update_graph(option_slctd):
 
     # Plotly Express
     
+    fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", 
+                        hover_data=["number_of_casualties", "number_of_vehicles"],
+                        color_discrete_sequence=["fuchsia"], zoom=3, height=300)
+    
+    
     fig.update_mapboxes(center_lat=55, center_lon=-1.3, zoom=4)
     fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
