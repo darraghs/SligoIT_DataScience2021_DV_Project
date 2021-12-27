@@ -48,8 +48,8 @@ app.layout = html.Div([
                      {"label": "2016", "value": 2016},
                      {"label": "2017", "value": 2017},
                      {"label": "2018", "value": 2018},
-                     {"label": "2018", "value": 2019},
-                     {"label": "2018", "value": 2020}],
+                     {"label": "2019", "value": 2019},
+                     {"label": "2020", "value": 2020}],
                  multi=False,
                  value=2020,
                  style={'width': "40%"}
@@ -81,11 +81,10 @@ def update_graph(option_slctd):
 
     # Plotly Express
     
-    fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", hover_data=["number_of_casualties", "number_of_vehicles"],
-                        color_discrete_sequence=["fuchsia"], zoom=3, height=300)
-    
+    fig.update_mapboxes(center_lat=55, center_lon=-1.3, zoom=4)
     fig.update_layout(mapbox_style="open-street-map")
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
+    fig.update_layout(height=600)
 
 
     return container, fig
