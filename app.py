@@ -57,8 +57,14 @@ app.layout = html.Div([
 
     html.Div(id='output_container', children=[]),
     html.Br(),
+    
+    app.layout = html.Div([
+        dl.Map(dl.TileLayer(), id="map", style={'width': '100%', 'height': '50vh'}),
+        html.Div(id="log")
+    ])
 
-    dcc.Graph(id='crash_map', figure={})
+    dcc.Graph(id='crash_map', figure={}),
+    html.Div(id='Coordinates',style={'display': 'none'})
 
 ])
 
@@ -97,7 +103,21 @@ def update_graph(option_slctd):
     return container, fig
 
 
-
-
+@app.callback(
+    Output('Coordinates', 'children'),
+    Input('crash_map', 'relayoutData'))
+def display_relayout_data(relayoutData):
+    try:
+        coords = relayoutData['mapbox._derived']['coordinates']
+        lon_min = coords[0][0]
+        lon_max = coords[1][0]
+        lat_min = coords[2][1]
+        lat_max = coords[1][1]
+        
+        print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
+        return [lat_min, lat_max, lon_min, lon_max]
+    except:
+        return []
+    
 if __name__ == '__main__':
     app.run_server(debug=True)
