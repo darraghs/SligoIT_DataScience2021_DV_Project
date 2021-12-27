@@ -5,7 +5,31 @@ import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output  # pip install dash (version 2.0.0 or higher)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+def getHour(timestr):
+    return timestr.split(':')[0]
+def getDate(datestr):
+    return datestr.split('/')[1]
+def correctTimestamp(timestamp):
+    if type(timestamp) == 'str':
+        return timestamp.replace('T', '')
+    else:
+        return timestamp
+
+def cleanDF(dataframe):
+    if 'accident_index' in dataframe.columns:
+        dataframe['accident_index'] = dataframe['accident_index'].apply(correctTimestamp)
+    if 'time' in dataframe.columns:
+        dataframe['time'] = dataframe['time'].apply(getHour)
+    if 'date' in dataframe.columns:
+        dataframe['date'] = dataframe['date'].apply(getDate)
+
+
+accident_2020_df=pd.read_csv(
+    "data/dft-road-casualty-statistics-accident-2020.csv"
+)
+cleanDF(accident_2020_df)
+accident_2020_df
 
 app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/' )
 
@@ -31,7 +55,7 @@ app.layout = html.Div([
     html.Div(id='output_container', children=[]),
     html.Br(),
 
-    dcc.Graph(id='my_bee_map', figure={})
+    dcc.Graph(id='crash_map', figure={})
 
 ])
 
@@ -39,7 +63,7 @@ app.layout = html.Div([
 # Connect the Plotly graphs with Dash Components
 @app.callback(
     [Output(component_id='output_container', component_property='children'),
-     Output(component_id='my_bee_map', component_property='figure')],
+     Output(component_id='crash_map', component_property='figure')],
     [Input(component_id='slct_year', component_property='value')]
 )
 def update_graph(option_slctd):
@@ -53,54 +77,15 @@ def update_graph(option_slctd):
     #dff = dff[dff["Affected by"] == "Varroa_mites"]
 
     # Plotly Express
-    fig = px.choropleth(
-        data_frame=dff,
-        locationmode='USA-states',
-        locations='state_code',
-        scope="usa",
-        color='Pct of Colonies Impacted',
-        hover_data=['State', 'Pct of Colonies Impacted'],
-        color_continuous_scale=px.colors.sequential.YlOrRd,
-        labels={'Pct of Colonies Impacted': '% of Bee Colonies'},
-        template='plotly_dark'
-    )
-    fig = px.scatter_mapbox(us_cities, lat="lat", lon="lon", hover_name="City", hover_data=["State", "Population"],
+    
+    fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", hover_data=["number_of_casualties", "number_of_vehicles"],
                         color_discrete_sequence=["fuchsia"], zoom=3, height=300)
-    fig.update_layout(
-        mapbox_style="white-bg",
-        mapbox_layers=[
-            {
-                "below": 'traces',
-                "sourcetype": "raster",
-                "sourceattribution": "United States Geological Survey",
-                "source": [
-                    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
-                ]
-            }
-          ])
+    
+    fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    #fig.show()
 
-    # Plotly Graph Objects (GO)
-    # fig = go.Figure(
-    #     data=[go.Choropleth(
-    #         locationmode='USA-states',
-    #         locations=dff['state_code'],
-    #         z=dff["Pct of Colonies Impacted"].astype(float),
-    #         colorscale='Reds',
-    #     )]
-    # )
-    #
-    # fig.update_layout(
-    #     title_text="Bees Affected by Mites in the USA",
-    #     title_xanchor="center",
-    #     title_font=dict(size=24),
-    #     title_x=0.5,
-    #     geo=dict(scope='usa'),
-    # )
 
     return container, fig
-
 
 
 
