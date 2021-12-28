@@ -1,4 +1,4 @@
-accident_lookup = {
+accident_data_lookup = {
 
     'police_force': {1: 'Metropolitan Police',
                      3: 'Cumbria',

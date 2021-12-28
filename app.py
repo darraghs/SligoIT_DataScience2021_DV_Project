@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
-from accidentdashboard import utils, accident_data
+from accidentdashboard import utils, accident_data_lookup
 
 accident_2020_df=pd.read_csv(
     "data/dft-road-casualty-statistics-accident-2020.csv"
@@ -46,7 +46,7 @@ app.layout = html.Div([
         dash_table.DataTable(
             id='table',
             columns=[{"name": i, "id": i}
-                     for i in accident_data.accident_lookup.keys()],
+                     for i in accident_data_lookup.accident_data_lookup.keys()],
             data=[],
             style_cell=dict(textAlign='left'),
             style_header=dict(backgroundColor="paleturquoise"),
@@ -95,8 +95,8 @@ def plot_basin(selection):
     if selection is not None:
         accident_index = selection["points"][0]["customdata"][0]
         accident_data = accident_2020_df[ accident_2020_df['accident_index']==accident_index]
-        
-        accident_data = accident_data.replace({'accident_severity', accident_data.accident_lookup['accident_severity']})
+
+        accident_data = accident_data.replace({'accident_severity', accident_data_lookup.accident_data_lookup['accident_severity']})
 
         print(f'Accident Data: {accident_data}')
 
