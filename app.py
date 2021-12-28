@@ -59,7 +59,8 @@ app.layout = html.Div([
     html.Br(),
 
     dcc.Graph(id='crash_map', figure={}),
-    html.Div(id='Coordinates',style={'display': 'none'})
+    html.Div(id='Coordinates'),
+    html.Div(id='Points')
 
 ])
 
@@ -111,6 +112,14 @@ def update_graph(option_slctd):
         
     return container, fig
 
+@app.callback(
+        Output('Points', 'children'),
+        [Input('crash_map', 'clickData')])
+def plot_basin(selection):
+    if selection is not None:
+        print(f'Point Selection: {selection}')
+        return selection
+    
 
 @app.callback(
     Output('Coordinates', 'children'),
