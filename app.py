@@ -60,7 +60,18 @@ app.layout = html.Div([
 
     dcc.Graph(id='crash_map', figure={}),
     html.Div(id='Coordinates'),
-    html.Div(id='Points', children=[])
+    html.Div(id='Points', children=[]),
+    html.Div([
+    dash_table.DataTable(
+        id='table',
+        columns=[{"name": i, "id": i} 
+                 for i in accident_2020_df.columns],
+        data=accident_2020_df.to_dict('records'),
+        style_cell=dict(textAlign='left'),
+        style_header=dict(backgroundColor="paleturquoise"),
+        style_data=dict(backgroundColor="lavender")
+    )
+
 
 ])
 
@@ -82,7 +93,7 @@ def update_graph(option_slctd):
     
     token = open(".mapbox_token").read()
 
-    crash_colours = ['blue', 'red', 'orange', 'yellow']
+    crash_colours = ['yellow','orange', 'red' ]
 
     crash_categories = accident_2020_df.accident_severity.unique()
 
