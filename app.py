@@ -96,7 +96,9 @@ def plot_basin(selection):
         accident_index = selection["points"][0]["customdata"][0]
         accident_data = accident_2020_df[ accident_2020_df['accident_index']==accident_index]
 
-        accident_data = accident_data.replace({'accident_severity', accident_data_lookup.accident_data_lookup['accident_severity']})
+        for i in accident_data_lookup.accident_data_lookup.keys():
+            lookup_dict = accident_data_lookup.accident_data_lookup[i]
+            accident_data = accident_data.replace({i, lookup_dict})
 
         print(f'Accident Data: {accident_data}')
 
