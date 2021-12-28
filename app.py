@@ -1,3 +1,4 @@
+
 import os
 
 import pandas as pd
@@ -7,14 +8,14 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
 from accidentdashboard import utils
 
-accident_2020_df = pd.read_csv(
+accident_2020_df=pd.read_csv(
     "data/dft-road-casualty-statistics-accident-2020.csv"
 )
 utils.cleanDF(accident_2020_df)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/')
+app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/' )
 
 server = app.server
 
@@ -55,7 +56,6 @@ app.layout = html.Div([
 
 ])
 
-
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
@@ -70,40 +70,32 @@ def update_graph(option_slctd):
     token = open(".mapbox_token").read()
 
     container = "The year chosen by user was: {}".format(option_slctd)
-
     token = open(".mapbox_token").read()
-
-    crash_colours = ['yellow', 'orange', 'red']
-
-    crash_categories = accident_2020_df.accident_severity.unique()
-
-    crash_dict = dict(zip(crash_categories, crash_colours))  # set up band to color substitution dict
-    accident_2020_df['color'] = accident_2020_df['accident_severity'].replace(to_replace=crash_colours)
-
+    crash_colours = ['yellow','orange', 'red' ]
     accident_2020_df['accident_severity'] = accident_2020_df['accident_severity'].astype(str)
-
     fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity",
-                            hover_data=["speed_limit", "number_of_vehicles"],
-                            custom_data=['accident_index'],
-                            color="accident_severity",
-                            color_discrete_sequence=crash_colours,
-                            zoom=4, height=800, width=600)
+                        hover_data=["speed_limit", "number_of_vehicles"],
+                        custom_data=['accident_index'],
+                        color="accident_severity",
+                        color_discrete_sequence=crash_colours,
+                        zoom=4, height=800, width=600)
+
 
     fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
     fig.update_mapboxes(center_lat=55, center_lon=-3.5)
-    fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
+    fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
     fig.update_layout(height=600)
 
     return container, fig
 
-
 @app.callback(
-    Output('Points', 'children'),
-    [Input('crash_map', 'clickData')])
+        Output('table', 'data'),
+        [Input('crash_map', 'clickData')])
 def plot_basin(selection):
     if selection is not None:
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_2020_df[accident_2020_df['accident_index'] == accident_index]
+        accident_data = accident_2020_df[ accident_2020_df['accident_index']==accident_index]
+
         print(f'Accident Data: {accident_data}')
 
         return accident_data
@@ -124,7 +116,6 @@ def display_relayout_data(relayoutData):
         return [lat_min, lat_max, lon_min, lon_max]
     except:
         return []
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
