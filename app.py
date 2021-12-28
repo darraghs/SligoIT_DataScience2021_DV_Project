@@ -40,7 +40,7 @@ server = app.server
 
 app.layout = html.Div([
 
-    html.H1("Web Application Dashboards with Dash", style={'text-align': 'center'}),
+    html.H1("UK Accident Dashboard", style={'text-align': 'center'}),
 
     dcc.Dropdown(id="slct_year",
                  options=[
@@ -78,12 +78,6 @@ def update_graph(option_slctd):
     token = open(".mapbox_token").read()
 
     container = "The year chosen by user was: {}".format(option_slctd)
-
-    #dff = df.copy()
-    #dff = dff[dff["Year"] == option_slctd]
-    #dff = dff[dff["Affected by"] == "Varroa_mites"]
-
-    # Plotly Express
     
     
     token = open(".mapbox_token").read()
@@ -100,6 +94,7 @@ def update_graph(option_slctd):
 
     fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", 
                         hover_data=["speed_limit", "number_of_vehicles"],
+                        custom_data=['accident_index'],
                         color="accident_severity", 
                         color_discrete_sequence=crash_colours,
                         zoom=4, height=800, width=600)
