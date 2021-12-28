@@ -98,7 +98,7 @@ def plot_basin(selection):
 
         print(f'Accident Data: {accident_data}')
 
-        return accident_data
+        return accident_data.to_dict('records')
 
 
 @app.callback(
