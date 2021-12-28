@@ -54,9 +54,9 @@ accident_data_lookup = {
                      99: 'Police Scotland'
                      },
 
-    'accident_severity': {1: 'Fatal',
-                          2: 'Serious',
-                          3: 'Slight'},
+    'accident_severity': {'1': 'Fatal',
+                          '2': 'Serious',
+                          '3': 'Slight'},
 
     'day_of_week': {
 
