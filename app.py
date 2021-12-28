@@ -84,17 +84,31 @@ def update_graph(option_slctd):
 
     # Plotly Express
     
+    
+    token = open(".mapbox_token").read()
+
+    crash_colours = ['blue', 'red', 'orange', 'yellow']
+
+    crash_categories = accident_2020_df.accident_severity.unique()
+
+
+    crash_dict = dict(zip(crash_categories,crash_colours)) #set up band to color substitution dict
+    accident_2020_df['color'] = accident_2020_df['accident_severity'].replace(to_replace=crash_colours)
+
+    accident_2020_df['accident_severity'] = accident_2020_df['accident_severity'].astype(str)
+
     fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity", 
                         hover_data=["speed_limit", "number_of_vehicles"],
                         color="accident_severity", 
+                        color_discrete_sequence=crash_colours,
                         zoom=4, height=800, width=600)
     
-    
+
     fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
     fig.update_mapboxes(center_lat=55, center_lon=-3.5)
     fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
     fig.update_layout(height=600)
-    
+        
     return container, fig
 
 
