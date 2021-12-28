@@ -46,7 +46,7 @@ app.layout = html.Div([
         dash_table.DataTable(
             id='table',
             columns=[{"name": i, "id": i}
-                     for i in accident_data['accident_lookup'].keys()],
+                     for i in accident_data.accident_lookup.keys()],
             data=[],
             style_cell=dict(textAlign='left'),
             style_header=dict(backgroundColor="paleturquoise"),
