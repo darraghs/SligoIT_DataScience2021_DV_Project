@@ -103,6 +103,8 @@ def update_accident_table(selection):
                 value = accident_data[i].values[0]
                 if value in lookup:
                     accident_data[i] = lookup[value]
+                else:
+                    print(f' Could not find value: {value} in lookup: {lookup}')
 
         return accident_data.to_dict('records')
 
