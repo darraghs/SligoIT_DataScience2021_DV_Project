@@ -91,22 +91,18 @@ def update_graph(option_slctd):
 @app.callback(
         Output('table', 'data'),
         [Input('crash_map', 'clickData')])
-def plot_basin(selection):
+def update_accident_table(selection):
+
     if selection is not None:
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_2020_df[accident_2020_df['accident_index']==accident_index]
-
-        accident_dict={}
-
-        print(f'Accident Data: {accident_data}')
+        accident_data = accident_2020_df[accident_2020_df['accident_index']==accident_index].copy()
 
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
-                accident_dict[i] = accident_data_lookup.accident_data_lookup[i][accident_dict[i].values[0]]
-            else:
-                accident_dict[i] = accident_dict[i].values[0]
-                
-        print(f'Accident Dict: {accident_dict}')
+                lookup = accident_data_lookup.accident_data_lookup[i]
+                value = accident_data[i].values[0]
+                if value in lookup:
+                    accident_data[i] = lookup[value]
 
         return accident_data.to_dict('records')
 
