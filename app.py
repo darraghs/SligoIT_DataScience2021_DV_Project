@@ -87,24 +87,24 @@ app.layout = html.Div([
      Input(component_id='slct_year', component_property='value')]
 )
 def update_map(marker_selection, option_slctd):
+
     global accident_df
+
     triggered_id = callback_context.triggered[0]['prop_id']
+    container = "The year chosen by user was: {}".format(option_slctd)
+    accident_df = utils.getaccidentdf(option_slctd)
+    fig = utils.getmapfigure(accident_df)
+
     if 'slct_year.value' == triggered_id:
-
-        accident_df = utils.getaccidentdf(option_slctd)
-        container = "The year chosen by user was: {}".format(option_slctd)
-        fig = utils.getmapfigure(accident_df)
-
         return [], container, fig
     else :
-        return update_accident_table(marker_selection)
+        return update_accident_table(marker_selection, accident_df), container, fig
 
 
-def update_accident_table(selection):
+def update_accident_table(selection, accidentdf):
     if selection is not None:
-        global accident_df
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
+        accident_data = accidentdf[accidentdf['accident_index'] == accident_index].copy()
 
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
