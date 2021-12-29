@@ -17,7 +17,20 @@ server = app.server
 tab1_content = dbc.Card(
     dbc.CardBody(
         [
-            html.P("This is tab 1!", className="card-text"),
+            dcc.Dropdown(id="graph_x_select",
+                         options=[{'label': str(b[1]), 'value': b[0]} for b in
+                                  accident_data_lookup.accident_data_lookup[
+                                      'local_authority_district'].items()],
+                         multi=True,
+                         value=[],
+                         ),
+            dcc.Dropdown(id="graph_y_select",
+                         options=[{'label': str(b[1]), 'value': b[0]} for b in
+                                  accident_data_lookup.accident_data_lookup[
+                                      'local_authority_district'].items()],
+                         multi=True,
+                         value=[],
+                         ),
 
         ], style={'min-height':'750px'}
     ),
@@ -205,21 +218,21 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, )
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
-            fig = apply_map_fitlers(year_selected, severity, local_auth_selected)
+            fig = apply_map_fitlers(year_selected, severity, local_auth_selected, False)
             return [], fig
         else:
             return update_accident_table(marker_selection), dash.no_update
     return dash.no_update, dash.no_update
 
 
-def apply_map_fitlers(year, severities, local_auth_selected):
+def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
     accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
     if len(local_auth_selected) > 0 :
         accident_df = accident_df[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
     print(f'Shape after filering: {accident_df.shape}')
-    fig = utils.getmapfigure(accident_df)
+    fig = utils.getmapfigure(accident_df, reset_zoom)
     return fig
 
 
