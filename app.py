@@ -79,8 +79,8 @@ def update_accident_table(selection):
                 value = accident_data[i].values[0]
                 if isinstance(value, numpy.int64):
                     value = value.item()
-                    
-                if isinstance(value, int) and value > 0 and value in lookup:
+
+                if isinstance(value, int) and value >= 0 and value in lookup:
                     accident_data[i] = lookup[value]
                 elif isinstance(value, str) and value in lookup:
                     accident_data[i] = lookup[value]
