@@ -70,7 +70,7 @@ bootstrap_rows = html.Div(
                                 dcc.Dropdown(id="seelct_local_authority",
                                              options=[{'label': str(b[1]), 'value': b[0]} for b in
                                                       accident_data_lookup.accident_data_lookup[
-                                                          'local_authority_district'].items],
+                                                          'local_authority_district'].items()],
                                              multi=True,
                                              value=[],
                                              ),
