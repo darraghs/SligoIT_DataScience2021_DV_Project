@@ -20,9 +20,9 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col(html.H3("Filter"), width=6, lg=3),
-            dbc.Col(html.H3("Map")),
-            dbc.Col(html.H3("Individual Accident Info"), width=3)
+            dbc.Col(html.H3("Filter"), width=2),
+            dbc.Col(html.H3("Map"), width=5),
+            dbc.Col(html.H3("Graphs"), width=5)
         ]),
         dbc.Row([
             dbc.Col(
@@ -62,39 +62,39 @@ bootstrap_rows = html.Div(
                         )
                     )
                 ])
-                , width=6, lg=3
+                , width=2
             ),
 
             dbc.Col(
                 html.Div(
                     dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df))
-                )
+                ), width=5
             ),
 
             dbc.Col(html.Div([
-                dash_table.DataTable(
-                    id='crash_table',
-                    columns=[{"name": i, "id": i}
-                             for i in ['labels', 'values']],
-                    data=[],
-                    style_table={'overflowX': 'auto'},
-                    style_cell={
-                        'height': 'auto',
-                        # all three widths are needed
-                        'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                        'whiteSpace': 'normal',
-                        'textAlign': 'left'
-                    },
-                    style_header=dict(backgroundColor="paleturquoise"),
-                    style_data=dict(backgroundColor="lavender")
-                )
-            ]), width=3),
+
+            ]), width=5),
         ]),
 
         dbc.Row([
-            dbc.Col(html.Div(id='output_container', children=[]), width=6, lg=3),
-            dbc.Col(html.Div(id='Coordinates')),
-            dbc.Col(html.Div(id='Points', children=[]), width=3)
+            dbc.Col(html.Div(id='output_container', children=[]), width=2),
+            dbc.Col(html.Div(id='Coordinates'), width=5),
+            dbc.Col(html.Div(dash_table.DataTable(
+                id='crash_table',
+                columns=[{"name": i, "id": i}
+                         for i in ['labels', 'values']],
+                data=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'height': 'auto',
+                    # all three widths are needed
+                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                    'whiteSpace': 'normal',
+                    'textAlign': 'left'
+                },
+                style_header=dict(backgroundColor="paleturquoise"),
+                style_data=dict(backgroundColor="lavender")
+            )), width=5)
         ]
         ),
     ]
