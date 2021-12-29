@@ -68,6 +68,13 @@ tab3_content = dbc.Card(
                 },
                 style_header=dict(backgroundColor="paleturquoise"),
                 style_data=dict(backgroundColor="lavender"),
+                style_cell_conditional=[
+                    {
+                        'if': {'column_id': c},
+                        'textAlign': 'right'
+                    } for c in ['values']
+                ],
+                style_as_list_view=True,
                 page_size=20
             ))
 
