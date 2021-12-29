@@ -19,27 +19,35 @@ bootstrap_rows = html.Div(
         dbc.Row(),
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
-        dbc.Row([ dbc.Col(html.Div("Select year: ")), dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
-                                              options=[
-                                                  {"label": "2016", "value": 2016},
-                                                  {"label": "2017", "value": 2017},
-                                                  {"label": "2018", "value": 2018},
-                                                  {"label": "2019", "value": 2019},
-                                                  {"label": "2020", "value": 2020}],
-                                              multi=False,
-                                              value=2020,
-                                              style={'width': "40%"}
-                                              )))]),
         dbc.Row([
-            dbc.Col( html.Div("Map")),
-            dbc.Col(html.Div("Graphs")),
+            dbc.Col( html.Div("Filter")),
+            dbc.Col(html.Div("Map")),
             dbc.Col(html.Div("Individual Accident Info"))
         ]
         ),
         dbc.Row(
             [
+                dbc.Col(html.Div(
+                    [
+                        dbc.Row([ dbc.Col(
+                            html.Div("Select year: ")),
+
+                            html.Div(dcc.Dropdown(id="slct_year",
+                                                  options=[
+                                                      {"label": "2016", "value": 2016},
+                                                      {"label": "2017", "value": 2017},
+                                                      {"label": "2018", "value": 2018},
+                                                      {"label": "2019", "value": 2019},
+                                                      {"label": "2020", "value": 2020}],
+                                                  multi=False,
+                                                  value=2020,
+                                                  style={'width': "40%"}
+                                                  ))
+                        ])
+                    ]
+                )),
                 dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
-                dbc.Col(html.Div("Graphs")),
+
                 dbc.Col(html.Div([
                     dash_table.DataTable(
                         id='crash_table',
