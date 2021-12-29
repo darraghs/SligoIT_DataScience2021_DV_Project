@@ -75,7 +75,11 @@ bootstrap_rows = html.Div(
 
             ]), width=5),
         ]),
-
+        dbc.Row([
+            dbc.Col(html.H3("Filter"), width=2),
+            dbc.Col(html.H3("Map"), width=5),
+            dbc.Col(html.H3("Individual Crash"), width=5)
+        ]),
         dbc.Row([
             dbc.Col(html.Div(id='output_container', children=[]), width=2),
             dbc.Col(html.Div(id='Coordinates'), width=5),
@@ -111,10 +115,11 @@ app.layout = dbc.Container(
     [Output('crash_table', 'data'),
      Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
-    [Input('crash_map', 'clickData'),
+    [   Input('severity-input', 'value'),
+        Input('crash_map', 'clickData'),
      Input(component_id='slct_year', component_property='value')]
 )
-def update_map(marker_selection, option_slctd):
+def update_map(severity, marker_selection, option_slctd):
     if option_slctd is not None:
         global accident_df
 
@@ -124,6 +129,8 @@ def update_map(marker_selection, option_slctd):
             accident_df = utils.getaccidentdf(option_slctd)
             fig = utils.getmapfigure(accident_df)
             return [], container, fig
+        elif 'severity-input.value' == triggered_id:
+            print(f'severity: {severity}')
         else:
             return update_accident_table(marker_selection), dash.no_update, dash.no_update
     return dash.no_update, dash.no_update, dash.no_update
