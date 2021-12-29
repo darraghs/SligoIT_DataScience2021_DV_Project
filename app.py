@@ -20,9 +20,9 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col(html.H3("Filter")),
+            dbc.Col(html.H3("Filter"), width=3),
             dbc.Col(html.H3("Map")),
-            dbc.Col(html.H3("Individual Accident Info"))
+            dbc.Col(html.H3("Individual Accident Info"), width=3)
         ]),
         dbc.Row([
             dbc.Col(
@@ -63,9 +63,14 @@ bootstrap_rows = html.Div(
                         )
                     )
                 ])
+                , width=3
             ),
 
-            dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
+            dbc.Col(
+                html.Div(
+                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df))
+                )
+            ),
 
             dbc.Col(html.Div([
                 dash_table.DataTable(
@@ -84,13 +89,13 @@ bootstrap_rows = html.Div(
                     style_header=dict(backgroundColor="paleturquoise"),
                     style_data=dict(backgroundColor="lavender")
                 )
-            ])),
+            ]) , width=3),
         ]),
 
         dbc.Row([
-            dbc.Col(html.Div(id='output_container', children=[])),
+            dbc.Col(html.Div(id='output_container', children=[]) , width=3),
             dbc.Col(html.Div(id='Coordinates')),
-            dbc.Col(html.Div(id='Points', children=[]))
+            dbc.Col(html.Div(id='Points', children=[]), width=3)
         ]
         ),
     ]
