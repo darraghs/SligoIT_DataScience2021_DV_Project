@@ -45,3 +45,4 @@ def getmapfigure(accident_df):
         fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
         fig.update_layout(height=800)
         return fig
+    return {}
