@@ -16,11 +16,11 @@ server = app.server
 # HTML Layout using Bootstrap
 bootstrap_rows = html.Div(
     [
-        dbc.Row(),
+        dbc.Row(html.Hr()),
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
-        dbc.Row(),
+        dbc.Row(html.Hr()),
         dbc.Row([
-            dbc.Col(html.H3("Filters"), width=2),
+            dbc.Col(html.H3("Filter By"), width=2),
             dbc.Col(html.H3("Map"), width=5),
             dbc.Col(html.H3("Graphs"), width=5)
         ]),
@@ -31,6 +31,7 @@ bootstrap_rows = html.Div(
                     dbc.Row(
                         dbc.Col(
                             html.Div([
+                                html.Hr(),
                                 dbc.Label("Year"),
                                 dcc.Dropdown(id="select_year",
                                              options=[
@@ -49,6 +50,7 @@ bootstrap_rows = html.Div(
                     dbc.Row(
                         dbc.Col(
                             html.Div([
+                                html.Hr(),
                                 dbc.Label("Severity"),
                                 dbc.Checklist(
                                     options=[
@@ -65,6 +67,7 @@ bootstrap_rows = html.Div(
                     dbc.Row(
                         dbc.Col(
                             html.Div([
+                                html.Hr(),
                                 dbc.Label("Local Authority"),
 
                                 dcc.Dropdown(id="select_local_authority",
