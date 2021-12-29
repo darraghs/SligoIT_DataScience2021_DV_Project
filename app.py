@@ -102,7 +102,7 @@ bootstrap_rows = html.Div(
 )
 
 app.layout = dbc.Container(
-    bootstrap_rows
+    bootstrap_rows, fluid=True
 )
 
 
