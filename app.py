@@ -1,6 +1,6 @@
 import numpy
 import pandas as pd
-from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
+from dash import Dash, dcc, html, Input, Output, dash_table, callback_context  # pip install dash (version 2.0.0 or higher)
 import dash_bootstrap_components as dbc
 
 from accidentdashboard import utils, accident_data_lookup
@@ -83,20 +83,23 @@ app.layout = html.Div([
     [  Output('crash_table', 'data'),
         Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
-    [Input(component_id='slct_year', component_property='value')]
+    [Input('crash_map', 'clickData'),
+     Input(component_id='slct_year', component_property='value')]
 )
-def update_map(option_slctd):
+def update_map(marker_selection, option_slctd):
     global accident_df
-    accident_df = utils.getaccidentdf(option_slctd)
-    container = "The year chosen by user was: {}".format(option_slctd)
-    fig = utils.getmapfigure(accident_df)
+    triggered_id = callback_context.triggered[0]['prop_id']
+    if 'slct_year.value' == triggered_id:
 
-    return [], container, fig
+        accident_df = utils.getaccidentdf(option_slctd)
+        container = "The year chosen by user was: {}".format(option_slctd)
+        fig = utils.getmapfigure(accident_df)
+
+        return [], container, fig
+    else :
+        return update_accident_table(marker_selection)
 
 
-@app.callback(
-    Output('crash_table', 'data'),
-    [Input('crash_map', 'clickData')])
 def update_accident_table(selection):
     if selection is not None:
         global accident_df
