@@ -20,7 +20,7 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col(html.H3("Filter"), width=2),
+            dbc.Col(html.H3("Filters"), width=2),
             dbc.Col(html.H3("Map"), width=5),
             dbc.Col(html.H3("Graphs"), width=5)
         ]),
@@ -77,7 +77,7 @@ bootstrap_rows = html.Div(
         ]),
         dbc.Row([
             dbc.Col(html.H3("Filter"), width=2),
-            dbc.Col(html.H3("Map"), width=5),
+            dbc.Col(html.H3("Coordinates"), width=5),
             dbc.Col(html.H3("Individual Crash"), width=5)
         ]),
         dbc.Row([
@@ -155,21 +155,24 @@ def update_accident_table(selection):
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
-                value = accident_data[i].values[0]
-                if isinstance(value, numpy.int64):
-                    value = value.item()
+                if len(accident_data[i].values) > 0 :
+                    value = accident_data[i].values[0]
+                    if isinstance(value, numpy.int64):
+                        value = value.item()
 
-                if isinstance(value, int) and value >= 0 and value in lookup:
-                    labels.append(i.replace('_', ' '))
-                    values.append(lookup[value])
-                elif isinstance(value, str) and value in lookup:
-                    labels.append(i.replace('_', ' '))
-                    values.append(lookup[value])
-                elif isinstance(value, int) and value == -1:
-                    labels.append(i.replace('_', ' '))
-                    values.append('Data missing or out of range')
+                    if isinstance(value, int) and value >= 0 and value in lookup:
+                        labels.append(i.replace('_', ' '))
+                        values.append(lookup[value])
+                    elif isinstance(value, str) and value in lookup:
+                        labels.append(i.replace('_', ' '))
+                        values.append(lookup[value])
+                    elif isinstance(value, int) and value == -1:
+                        labels.append(i.replace('_', ' '))
+                        values.append('Data missing or out of range')
+                    else:
+                        print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
                 else:
-                    print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
+                    print(f'No values for label: {i}')
             else:
                 labels.append(i.replace('_', ' '))
                 values.append(accident_data[i])
