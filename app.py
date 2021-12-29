@@ -41,7 +41,8 @@ tab2_content = dbc.Card(
                     'textAlign': 'left'
                 },
                 style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender")
+                style_data=dict(backgroundColor="lavender"),
+                page_size=20
             )),
 
         ]
@@ -66,7 +67,8 @@ tab3_content = dbc.Card(
                     'textAlign': 'left'
                 },
                 style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender")
+                style_data=dict(backgroundColor="lavender"),
+                page_size=20
             ))
 
         ]
@@ -92,7 +94,7 @@ bootstrap_rows = html.Div(
         dbc.Row([
             dbc.Col(
                 html.Div([
-                    html.H3("Filter By"),
+                    html.H5("Filter By"),
                     dbc.Row(
                         dbc.Col(
                             html.Div([
