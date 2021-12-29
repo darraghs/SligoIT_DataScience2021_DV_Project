@@ -120,7 +120,7 @@ app.layout = dbc.Container(
      Input(component_id='slct_year', component_property='value')]
 )
 def update_map(severity, marker_selection, option_slctd):
-    if option_slctd is not None && len(severity)>0:
+    if option_slctd is not None and len(severity)>0:
         global accident_df
 
         triggered_id = callback_context.triggered[0]['prop_id']
