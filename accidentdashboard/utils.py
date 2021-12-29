@@ -27,7 +27,9 @@ def cleanDF(dataframe):
 
 
 def getaccidentdf(year):
-    accident_df = pd.read_csv(f"data/dft-road-casualty-statistics-accident-{year}.csv")
+    csvfile = f"data/dft-road-casualty-statistics-accident-{year}.csv"
+    print(f'Getting CSV File: {csvfile}')
+    accident_df = pd.read_csv()
     cleanDF(accident_df)
     return accident_df
 
@@ -35,7 +37,7 @@ def getaccidentdf(year):
 def getmapfigure(accident_df):
     if accident_df is not None:
         crash_colours = ['yellow', 'orange', 'red']
-        
+
         token = open(".mapbox_token").read()
         accident_df['accident_severity'] = accident_df['accident_severity'].astype(str)
         fig = px.scatter_mapbox(accident_df, lat="latitude", lon="longitude", hover_name="accident_severity",

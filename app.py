@@ -77,9 +77,11 @@ def update_accident_table(selection):
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
                 value = accident_data[i].values[0]
-                if value > 0 and value in lookup:
+                if isinstance(value, int) and value > 0 and value in lookup:
                     accident_data[i] = lookup[value]
-                elif value == -1:
+                elif isinstance(value, str) and value in lookup:
+                    accident_data[i] = lookup[value]
+                elif isinstance(value, int) and value == -1:
                     accident_data[i] = 'Data missing or out of range'
                 else:
                     print(f' Could not find value: {value} in lookup: {lookup} for key: {i}')
