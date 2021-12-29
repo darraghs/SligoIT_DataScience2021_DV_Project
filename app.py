@@ -206,10 +206,10 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, )
         triggered_id = callback_context.triggered[0]['prop_id']
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
             fig = apply_map_fitlers(year_selected, severity, local_auth_selected)
-            return [], dash.no_update, fig
+            return [], fig
         else:
-            return update_accident_table(marker_selection), dash.no_update, dash.no_update
-    return dash.no_update, dash.no_update, dash.no_update
+            return update_accident_table(marker_selection), dash.no_update
+    return dash.no_update, dash.no_update
 
 
 def apply_map_fitlers(year, severities, local_auth_selected):

@@ -34,7 +34,7 @@ def getaccidentdf(year):
     return accident_df
 
 
-def getmapfigure(accident_df):
+def getmapfigure(accident_df, reset_zoom=False):
     token = open(".mapbox_token").read()
     if accident_df is not None:
         crash_colours = ['yellow', 'orange', 'red']
