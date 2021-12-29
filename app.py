@@ -8,16 +8,18 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
 from accidentdashboard import utils, accident_data_lookup
 
-accident_2020_df=pd.read_csv(
-    "data/dft-road-casualty-statistics-accident-2020.csv"
-)
-utils.cleanDF(accident_2020_df)
+
+accident_df = utils.getaccidentdf(2020)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+crash_colours = ['yellow','orange', 'red' ]
 
 app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/' )
 
 server = app.server
+
+initialmap = utils.getmapfigure(accident_df)
 
 app.layout = html.Div([
 
@@ -39,7 +41,7 @@ app.layout = html.Div([
     html.Div(id='output_container', children=[]),
     html.Br(),
 
-    dcc.Graph(id='crash_map', figure={}),
+    dcc.Graph(id='crash_map', figure=initialmap),
     html.Div(id='Coordinates'),
     html.Div(id='Points', children=[]),
     html.Div([
@@ -63,28 +65,12 @@ app.layout = html.Div([
      Output(component_id='crash_map', component_property='figure')],
     [Input(component_id='slct_year', component_property='value')]
 )
-def update_graph(option_slctd):
-    print(option_slctd)
-    print(type(option_slctd))
+def update_map(option_slctd):
 
-    token = open(".mapbox_token").read()
-
+    global accident_df
+    accident_df = utils.getaccidentdf(option_slctd)
     container = "The year chosen by user was: {}".format(option_slctd)
-    token = open(".mapbox_token").read()
-    crash_colours = ['yellow','orange', 'red' ]
-    accident_2020_df['accident_severity'] = accident_2020_df['accident_severity'].astype(str)
-    fig = px.scatter_mapbox(accident_2020_df, lat="latitude", lon="longitude", hover_name="accident_severity",
-                        hover_data=["speed_limit", "number_of_vehicles"],
-                        custom_data=['accident_index'],
-                        color="accident_severity",
-                        color_discrete_sequence=crash_colours,
-                        zoom=4, height=800, width=600)
-
-
-    fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
-    fig.update_mapboxes(center_lat=55, center_lon=-3.5)
-    fig.update_layout(margin={"r":1,"t":1,"l":1,"b":1})
-    fig.update_layout(height=600)
+    fig = utils.getmapfigure(accident_df)
 
     return container, fig
 
@@ -94,15 +80,18 @@ def update_graph(option_slctd):
 def update_accident_table(selection):
 
     if selection is not None:
+        global accident_df
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_2020_df[accident_2020_df['accident_index']==accident_index].copy()
+        accident_data = accident_df[accident_df['accident_index']==accident_index].copy()
 
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
                 value = accident_data[i].values[0]
-                if value in lookup:
+                if value > 0 and value in lookup:
                     accident_data[i] = lookup[value]
+                elif value == -1:
+                    accident_data[i] = 'Data missing or out of range'
                 else:
                     print(f' Could not find value: {value} in lookup: {lookup} for key: {i}')
 
@@ -124,6 +113,7 @@ def display_relayout_data(relayoutData):
         return [lat_min, lat_max, lon_min, lon_max]
     except:
         return []
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
