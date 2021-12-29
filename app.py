@@ -32,7 +32,7 @@ bootstrap_rows = html.Div(
                         dbc.Col(
                             html.Div([
                                 dbc.Label("Year"),
-                                dcc.Dropdown(id="slct_year",
+                                dcc.Dropdown(id="select_year",
                                              options=[
                                                  {"label": "2016", "value": 2016},
                                                  {"label": "2017", "value": 2017},
@@ -67,7 +67,7 @@ bootstrap_rows = html.Div(
                             html.Div([
                                 dbc.Label("Local Authority"),
 
-                                dcc.Dropdown(id="seelct_local_authority",
+                                dcc.Dropdown(id="select_local_authority",
                                              options=[{'label': str(b[1]), 'value': b[0]} for b in
                                                       accident_data_lookup.accident_data_lookup[
                                                           'local_authority_district'].items()],
@@ -133,30 +133,31 @@ app.layout = dbc.Container(
     [Output('crash_table', 'data'),
      Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
-    [Input('severity-input', 'value'),
+    [Input(component_id='select_year', component_property='value'),
+     Input('severity-input', 'value'),
+     Input('select_local_authority', 'value'),
      Input('crash_map', 'clickData'),
-     Input(component_id='slct_year', component_property='value')]
+     ]
 )
-def update_map(severity, marker_selection, year_selected):
+def update_map(year_selected, severity, local_auth_selected, marker_selection, ):
     if year_selected is not None and len(severity) > 0:
         global accident_df
 
         triggered_id = callback_context.triggered[0]['prop_id']
-        if 'slct_year.value' == triggered_id:
-            fig = apply_map_fitlers(severity, year_selected)
-            return [], dash.no_update, fig
-        elif 'severity-input.value' == triggered_id:
-            fig = apply_map_fitlers(severity, year_selected)
+        if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
+            fig = apply_map_fitlers(year_selected, severity, local_auth_selected)
             return [], dash.no_update, fig
         else:
             return update_accident_table(marker_selection), dash.no_update, dash.no_update
     return dash.no_update, dash.no_update, dash.no_update
 
 
-def apply_map_fitlers(severities, year):
+def apply_map_fitlers(year, severities, local_auth_selected):
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
     accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
+    if len(local_auth_selected) > 0 :
+        accident_df = accident_df[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
     print(f'Shape after filering: {accident_df.shape}')
     fig = utils.getmapfigure(accident_df)
     return fig
