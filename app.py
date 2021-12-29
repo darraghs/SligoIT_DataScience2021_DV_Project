@@ -37,9 +37,16 @@ row = html.Div(
                                               )))),
         dbc.Row(
             [
+                dbc.Col(html.Div( dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)) )),
                 dbc.Col(html.Div("One of three columns")),
-                dbc.Col(html.Div("One of three columns")),
-                dbc.Col(html.Div("One of three columns")),
+                dbc.Col(html.Div(dash_table.DataTable(
+                    id='table',
+                    columns=[{"name": i, "id": i}
+                             for i in accident_data_lookup.accident_data_lookup.keys()],
+                    data=[],
+                    style_cell=dict(textAlign='left'),
+                    style_header=dict(backgroundColor="paleturquoise"),
+                    style_data=dict(backgroundColor="lavender"))),
             ]
         ),
     ]
@@ -56,20 +63,9 @@ app.layout = html.Div([
     html.Div(id='output_container', children=[]),
     html.Br(),
 
-    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)),
+   ,
     html.Div(id='Coordinates'),
-    html.Div(id='Points', children=[]),
-    html.Div([
-        dash_table.DataTable(
-            id='table',
-            columns=[{"name": i, "id": i}
-                     for i in accident_data_lookup.accident_data_lookup.keys()],
-            data=[],
-            style_cell=dict(textAlign='left'),
-            style_header=dict(backgroundColor="paleturquoise"),
-            style_data=dict(backgroundColor="lavender")
-        )
-    ])
+    html.Div(id='Points', children=[])
 
 ])
 
