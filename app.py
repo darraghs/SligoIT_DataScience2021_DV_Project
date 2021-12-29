@@ -24,64 +24,67 @@ bootstrap_rows = html.Div(
             dbc.Col(html.H3("Map")),
             dbc.Col(html.H3("Individual Accident Info"))
         ]),
-        dbc.Row(
-            html.Div([
-                dbc.Row(
-                    dbc.Col(
-                        dbc.Checklist(
-                            options=[
-                                {"label": "Fatal", "value": 1},
-                                {"label": "Serious", "value": 2},
-                                {"label": "Slight", "value": 3},
-                            ],
-                            value=[1],
-                            id="severity-input",
+        dbc.Row([
+            dbc.Col(
+                html.Div([
+                    dbc.Row(
+                        dbc.Col(
+                            dbc.Checklist(
+                                options=[
+                                    {"label": "Fatal", "value": 1},
+                                    {"label": "Serious", "value": 2},
+                                    {"label": "Slight", "value": 3},
+                                ],
+                                value=[1],
+                                id="severity-input",
+                            )
+                        )
+                    ),
+                    dbc.Row(
+                        dbc.Col(
+                            html.Div("Select year: ")
+                        )
+                    ),
+                    dbc.Row(
+                        dbc.Col(
+                            html.Div(dcc.Dropdown(id="slct_year",
+                                                  options=[
+                                                      {"label": "2016", "value": 2016},
+                                                      {"label": "2017", "value": 2017},
+                                                      {"label": "2018", "value": 2018},
+                                                      {"label": "2019", "value": 2019},
+                                                      {"label": "2020", "value": 2020}],
+                                                  multi=False,
+                                                  value=2020,
+                                                  style={'width': "40%"}
+                                                  )
+                                     )
                         )
                     )
-                ),
-                dbc.Row(
-                    dbc.Col(
-                        html.Div("Select year: ")
-                    )
-                ),
-                dbc.Row(
-                    dbc.Col(
-                        html.Div(dcc.Dropdown(id="slct_year",
-                                              options=[
-                                                  {"label": "2016", "value": 2016},
-                                                  {"label": "2017", "value": 2017},
-                                                  {"label": "2018", "value": 2018},
-                                                  {"label": "2019", "value": 2019},
-                                                  {"label": "2020", "value": 2020}],
-                                              multi=False,
-                                              value=2020,
-                                              style={'width': "40%"}
-                                              )
-                                 )
-                    )
-                )
-            ])
-        ),
-        dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
+                ])
+            ),
 
-        dbc.Col(html.Div([
-            dash_table.DataTable(
-                id='crash_table',
-                columns=[{"name": i, "id": i}
-                         for i in ['labels', 'values']],
-                data=[],
-                style_table={'overflowX': 'auto'},
-                style_cell={
-                    'height': 'auto',
-                    # all three widths are needed
-                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                    'whiteSpace': 'normal',
-                    'textAlign': 'left'
-                },
-                style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender")
-            )
-        ])),
+            dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
+
+            dbc.Col(html.Div([
+                dash_table.DataTable(
+                    id='crash_table',
+                    columns=[{"name": i, "id": i}
+                             for i in ['labels', 'values']],
+                    data=[],
+                    style_table={'overflowX': 'auto'},
+                    style_cell={
+                        'height': 'auto',
+                        # all three widths are needed
+                        'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                        'whiteSpace': 'normal',
+                        'textAlign': 'left'
+                    },
+                    style_header=dict(backgroundColor="paleturquoise"),
+                    style_data=dict(backgroundColor="lavender")
+                )
+            ])),
+        ]),
 
         dbc.Row([
             dbc.Col(html.Div(id='output_container', children=[])),
