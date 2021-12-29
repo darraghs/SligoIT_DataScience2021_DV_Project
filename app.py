@@ -43,7 +43,8 @@ row = html.Div(
                 dbc.Col(html.Div([
                     dash_table.DataTable(
                         id='table',
-                        columns=['labels', 'values'],
+                        columns=[{"name": i, "id": i}
+                                 for i in ['labels', 'values']],
                         data=[],
                         style_cell=dict(textAlign='left'),
                         style_header=dict(backgroundColor="paleturquoise"),
