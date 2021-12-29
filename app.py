@@ -25,30 +25,42 @@ bootstrap_rows = html.Div(
             dbc.Col(html.H3("Individual Accident Info"))
         ]),
         dbc.Row(
-            [
-
-                dbc.Checklist(
-                    options=[
-                        {"label": "Fatal", "value": 1},
-                        {"label": "Serious", "value": 2},
-                        {"label": "Slight", "value": 3},
-                    ],
-                    value=[1],
-                    id="severity-input",
+            html.Div([
+                dbc.Row(
+                    dbc.Col(
+                        dbc.Checklist(
+                            options=[
+                                {"label": "Fatal", "value": 1},
+                                {"label": "Serious", "value": 2},
+                                {"label": "Slight", "value": 3},
+                            ],
+                            value=[1],
+                            id="severity-input",
+                        )
+                    )
                 ),
-                html.Div("Select year: "),
-                html.Div(dcc.Dropdown(id="slct_year",
-                                      options=[
-                                          {"label": "2016", "value": 2016},
-                                          {"label": "2017", "value": 2017},
-                                          {"label": "2018", "value": 2018},
-                                          {"label": "2019", "value": 2019},
-                                          {"label": "2020", "value": 2020}],
-                                      multi=False,
-                                      value=2020,
-                                      style={'width': "40%"}
-                                      ))
-            ]
+                dbc.Row(
+                    dbc.Col(
+                        html.Div("Select year: ")
+                    )
+                ),
+                dbc.Row(
+                    dbc.Col(
+                        html.Div(dcc.Dropdown(id="slct_year",
+                                              options=[
+                                                  {"label": "2016", "value": 2016},
+                                                  {"label": "2017", "value": 2017},
+                                                  {"label": "2018", "value": 2018},
+                                                  {"label": "2019", "value": 2019},
+                                                  {"label": "2020", "value": 2020}],
+                                              multi=False,
+                                              value=2020,
+                                              style={'width': "40%"}
+                                              )
+                                 )
+                    )
+                )
+            ])
         ),
         dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
 
