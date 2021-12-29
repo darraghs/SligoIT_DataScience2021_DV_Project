@@ -20,7 +20,7 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col(html.H3("Filter"), width=3),
+            dbc.Col(html.H3("Filter"), width=6, lg=3),
             dbc.Col(html.H3("Map")),
             dbc.Col(html.H3("Individual Accident Info"), width=3)
         ]),
@@ -56,14 +56,13 @@ bootstrap_rows = html.Div(
                                                  {"label": "2019", "value": 2019},
                                                  {"label": "2020", "value": 2020}],
                                              multi=False,
-                                             value=2020,
-                                             style={'width': "40%"}
+                                             value=2020
                                              )
                             ])
                         )
                     )
                 ])
-                , width=3
+                , width=6, lg=3
             ),
 
             dbc.Col(
@@ -89,11 +88,11 @@ bootstrap_rows = html.Div(
                     style_header=dict(backgroundColor="paleturquoise"),
                     style_data=dict(backgroundColor="lavender")
                 )
-            ]) , width=3),
+            ]), width=3),
         ]),
 
         dbc.Row([
-            dbc.Col(html.Div(id='output_container', children=[]) , width=3),
+            dbc.Col(html.Div(id='output_container', children=[]), width=6, lg=3),
             dbc.Col(html.Div(id='Coordinates')),
             dbc.Col(html.Div(id='Points', children=[]), width=3)
         ]
