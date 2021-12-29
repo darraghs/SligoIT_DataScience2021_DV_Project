@@ -19,8 +19,6 @@ app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathnam
 
 server = app.server
 
-initialmap = utils.getmapfigure(accident_df)
-
 app.layout = html.Div([
 
     html.H1("UK Accident Dashboard", style={'text-align': 'center'}),
@@ -41,7 +39,7 @@ app.layout = html.Div([
     html.Div(id='output_container', children=[]),
     html.Br(),
 
-    dcc.Graph(id='crash_map', figure=initialmap),
+    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)),
     html.Div(id='Coordinates'),
     html.Div(id='Points', children=[]),
     html.Div([

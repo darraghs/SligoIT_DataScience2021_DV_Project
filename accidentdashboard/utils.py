@@ -26,7 +26,8 @@ def cleanDF(dataframe):
 
 def getaccidentdf(year):
     accident_df=pd.read_csv(f"data/dft-road-casualty-statistics-accident-{year}.csv")
-    return cleanDF(accident_df)
+    cleanDF(accident_df)
+    return accident_df
 
 def getmapfigure(accident_df):
     if accident_df is not None:
