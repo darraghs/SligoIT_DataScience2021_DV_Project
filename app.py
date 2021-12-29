@@ -16,7 +16,9 @@ server = app.server
 # HTML Layout using Bootstrap
 bootstrap_rows = html.Div(
     [
-        dbc.Row(dbc.Col(html.H1("UK Accident Dashboard", style={'text-align': 'center'}))),
+        dbc.Row(),
+        dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
+        dbc.Row(),
         dbc.Row([ dbc.Col(html.Div("Select year: ")), dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
                                               options=[
                                                   {"label": "2016", "value": 2016},
