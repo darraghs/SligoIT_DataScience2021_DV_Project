@@ -45,6 +45,7 @@ def getmapfigure(accident_df):
                                 custom_data=['accident_index'],
                                 color="accident_severity",
                                 color_discrete_sequence=crash_colours,
+                                showlegend=False,
                                 zoom=5, height=800)
 
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)

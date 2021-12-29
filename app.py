@@ -20,9 +20,9 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col( html.Div("Filter")),
-            dbc.Col(html.Div("Map")),
-            dbc.Col(html.Div("Individual Accident Info"))
+            dbc.Col( html.H3("Filter")),
+            dbc.Col(html.H3("Map")),
+            dbc.Col(html.H3("Individual Accident Info"))
         ]
         ),
         dbc.Row(
@@ -30,6 +30,15 @@ bootstrap_rows = html.Div(
                 dbc.Col(html.Div(
                     [
                         dbc.Row([ dbc.Col(
+                            dbc.Checklist(
+                                options=[
+                                    {"label": "Fatal", "value": 1},
+                                    {"label": "Serious", "value": 2},
+                                    {"label": "Slight", "value": 3},
+                                ],
+                                value=[1],
+                                id="severity-input",
+                            ),
                             html.Div("Select year: ")),
 
                             html.Div(dcc.Dropdown(id="slct_year",
