@@ -1,21 +1,12 @@
-
-import os
-
-import pandas as pd
-
-  # (version 4.7.0 or higher)
-import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
-from accidentdashboard import utils, accident_data_lookup
 
+from accidentdashboard import utils, accident_data_lookup
 
 accident_df = utils.getaccidentdf(2020)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-crash_colours = ['yellow','orange', 'red' ]
-
-app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/' )
+app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/')
 
 server = app.server
 
@@ -56,6 +47,7 @@ app.layout = html.Div([
 
 ])
 
+
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
@@ -64,7 +56,6 @@ app.layout = html.Div([
     [Input(component_id='slct_year', component_property='value')]
 )
 def update_map(option_slctd):
-
     global accident_df
     accident_df = utils.getaccidentdf(option_slctd)
     container = "The year chosen by user was: {}".format(option_slctd)
@@ -72,15 +63,15 @@ def update_map(option_slctd):
 
     return container, fig
 
-@app.callback(
-        Output('table', 'data'),
-        [Input('crash_map', 'clickData')])
-def update_accident_table(selection):
 
+@app.callback(
+    Output('table', 'data'),
+    [Input('crash_map', 'clickData')])
+def update_accident_table(selection):
     if selection is not None:
         global accident_df
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_df[accident_df['accident_index']==accident_index].copy()
+        accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
 
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
