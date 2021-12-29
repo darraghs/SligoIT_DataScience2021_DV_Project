@@ -20,84 +20,81 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(),
         dbc.Row([
-            dbc.Col( html.H3("Filter")),
+            dbc.Col(html.H3("Filter")),
             dbc.Col(html.H3("Map")),
             dbc.Col(html.H3("Individual Accident Info"))
         ]
         ),
         dbc.Row(
             [
-                dbc.Col(html.Div(
-                    [
-                        dbc.Row([ dbc.Col(
-                            dbc.Checklist(
-                                options=[
-                                    {"label": "Fatal", "value": 1},
-                                    {"label": "Serious", "value": 2},
-                                    {"label": "Slight", "value": 3},
-                                ],
-                                value=[1],
-                                id="severity-input",
-                            ),
-                            html.Div("Select year: ")),
 
-                            html.Div(dcc.Dropdown(id="slct_year",
-                                                  options=[
-                                                      {"label": "2016", "value": 2016},
-                                                      {"label": "2017", "value": 2017},
-                                                      {"label": "2018", "value": 2018},
-                                                      {"label": "2019", "value": 2019},
-                                                      {"label": "2020", "value": 2020}],
-                                                  multi=False,
-                                                  value=2020,
-                                                  style={'width': "40%"}
-                                                  ))
-                        ])
-                    ]
-                )),
-                dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
+                dbc.Checklist(
+                    options=[
+                        {"label": "Fatal", "value": 1},
+                        {"label": "Serious", "value": 2},
+                        {"label": "Slight", "value": 3},
+                    ],
+                    value=[1],
+                    id="severity-input",
+                ),
+                html.Div("Select year: "),
+                html.Div(dcc.Dropdown(id="slct_year",
+                                      options=[
+                                          {"label": "2016", "value": 2016},
+                                          {"label": "2017", "value": 2017},
+                                          {"label": "2018", "value": 2018},
+                                          {"label": "2019", "value": 2019},
+                                          {"label": "2020", "value": 2020}],
+                                      multi=False,
+                                      value=2020,
+                                      style={'width': "40%"}
+                                      ))
 
-                dbc.Col(html.Div([
-                    dash_table.DataTable(
-                        id='crash_table',
-                        columns=[{"name": i, "id": i}
-                                 for i in ['labels', 'values']],
-                        data=[],
-                        style_table={'overflowX': 'auto'},
-                        style_cell={
-                            'height': 'auto',
-                            # all three widths are needed
-                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                            'whiteSpace': 'normal',
-                            'textAlign':'left'
-                        },
-                        style_header=dict(backgroundColor="paleturquoise"),
-                        style_data=dict(backgroundColor="lavender")
-                    )
-                ])),
             ]
         ),
-        dbc.Row([
-            dbc.Col( html.Div(id='output_container', children=[])),
-            dbc.Col(html.Div(id='Coordinates')),
-            dbc.Col(html.Div(id='Points', children=[]))
-            ]
-        ),
+        dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
+
+        dbc.Col(html.Div([
+            dash_table.DataTable(
+                id='crash_table',
+                columns=[{"name": i, "id": i}
+                         for i in ['labels', 'values']],
+                data=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'height': 'auto',
+                    # all three widths are needed
+                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                    'whiteSpace': 'normal',
+                    'textAlign': 'left'
+                },
+                style_header=dict(backgroundColor="paleturquoise"),
+                style_data=dict(backgroundColor="lavender")
+            )
+        ])),
     ]
+),
+dbc.Row([
+    dbc.Col(html.Div(id='output_container', children=[])),
+    dbc.Col(html.Div(id='Coordinates')),
+    dbc.Col(html.Div(id='Points', children=[]))
+]
+),
+]
 )
 
 app.layout = bootstrap_rows
 
-
-# ------------------------------------------------------------------------------
-# Connect the map component
-@app.callback(
+             # ------------------------------------------------------------------------------
+             # Connect the map component
+             @ app.callback(
     [Output('crash_table', 'data'),
-     Output(component_id='output_container', component_property='children'),
-     Output(component_id='crash_map', component_property='figure')],
-    [Input('crash_map', 'clickData'),
-     Input(component_id='slct_year', component_property='value')]
+Output(component_id='output_container', component_property='children'),
+Output(component_id='crash_map', component_property='figure')],
+[Input('crash_map', 'clickData'),
+Input(component_id='slct_year', component_property='value')]
 )
+
 def update_map(marker_selection, option_slctd):
     if option_slctd is not None:
         global accident_df
