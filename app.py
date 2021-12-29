@@ -120,17 +120,19 @@ app.layout = dbc.Container(
      Input(component_id='slct_year', component_property='value')]
 )
 def update_map(severity, marker_selection, option_slctd):
-    if option_slctd is not None:
+    if option_slctd is not None && len(severity)>0:
         global accident_df
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if 'slct_year.value' == triggered_id:
-            container = "The year chosen by user was: {}".format(option_slctd)
             accident_df = utils.getaccidentdf(option_slctd)
+            accident_df[accident_df['accident_index'].isin(severity)]
             fig = utils.getmapfigure(accident_df)
-            return [], container, fig
+            return [], dash.no_update, fig
         elif 'severity-input.value' == triggered_id:
-            print(f'severity: {severity}')
+            accident_df = accident_df[accident_df['accident_index'].isin(severity)].copy()
+            fig = utils.getmapfigure(accident_df)
+            return [], dash.no_update, fig
         else:
             return update_accident_table(marker_selection), dash.no_update, dash.no_update
     return dash.no_update, dash.no_update, dash.no_update
