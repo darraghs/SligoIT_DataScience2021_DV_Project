@@ -104,17 +104,17 @@ def update_accident_table(selection):
                     value = value.item()
 
                 if isinstance(value, int) and value >= 0 and value in lookup:
-                    labels.append(accident_data[i].replace('_', ' '))
+                    labels.append(i.replace('_', ' '))
                     values.append(lookup[value])
                 elif isinstance(value, str) and value in lookup:
-                    labels.append(accident_data[i].replace('_', ' '))
+                    labels.append(i.replace('_', ' '))
                     values.append(lookup[value])
                 elif isinstance(value, int) and value == -1:
-                    labels.append(accident_data[i].replace('_', ' '))
+                    labels.append(i.replace('_', ' '))
                     values.append('Data missing or out of range')
                 else:
                     print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
-                    
+
         DF_SIMPLE = pd.DataFrame({
             'labels': labels,
             'values': values
