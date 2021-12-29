@@ -17,6 +17,7 @@ server = app.server
 tab1_content = dbc.Card(
     dbc.CardBody(
         [
+            dbc.Label("X-Axis"),
             dcc.Dropdown(id="graph_x_select",
                          options=[{'label': str(b[1]), 'value': b[0]} for b in
                                   accident_data_lookup.accident_data_lookup[
@@ -24,6 +25,7 @@ tab1_content = dbc.Card(
                          multi=True,
                          value=[],
                          ),
+            dbc.Label("Y-Axis"),
             dcc.Dropdown(id="graph_y_select",
                          options=[{'label': str(b[1]), 'value': b[0]} for b in
                                   accident_data_lookup.accident_data_lookup[
