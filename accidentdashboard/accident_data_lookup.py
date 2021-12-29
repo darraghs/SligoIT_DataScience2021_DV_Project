@@ -1128,11 +1128,11 @@ accident_data_lookup = {
 
     'first_road_class': {
 
-        '1': 'Motorway',
-        '2': 'A(M)',
-        '3': 'A',
-        '4': 'B',
-        '5': 'C'
+        1: 'Motorway',
+        2: 'A(M)',
+        3: 'A',
+        4: 'B',
+        5: 'C'
     },
 
     'road_type': {
