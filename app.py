@@ -19,7 +19,7 @@ tab1_content = dbc.Card(
         [
             html.P("This is tab 1!", className="card-text"),
 
-        ]
+        ], style={'min-height':'750px'}
     ),
     className="mt-3",
 )
@@ -45,7 +45,7 @@ tab2_content = dbc.Card(
                 page_size=20
             )),
 
-        ]
+        ], style={'min-height':'750px'}
     ),
     className="mt-3",
 )
@@ -66,8 +66,8 @@ tab3_content = dbc.Card(
                     'whiteSpace': 'normal',
                     'textAlign': 'left'
                 },
-                style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender"),
+                style_header=dict(backgroundColor="lightgrey"),
+                style_data=dict(backgroundColor="white"),
                 style_cell_conditional=[
                     {
                         'if': {'column_id': c},
@@ -78,7 +78,7 @@ tab3_content = dbc.Card(
                 page_size=20
             ))
 
-        ]
+        ], style={'min-height':'750px'}
     ),
     className="mt-3",
 )
