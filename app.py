@@ -23,8 +23,7 @@ bootstrap_rows = html.Div(
             dbc.Col(html.H3("Filter")),
             dbc.Col(html.H3("Map")),
             dbc.Col(html.H3("Individual Accident Info"))
-        ]
-        ),
+        ]),
         dbc.Row(
             [
 
@@ -49,7 +48,6 @@ bootstrap_rows = html.Div(
                                       value=2020,
                                       style={'width': "40%"}
                                       ))
-
             ]
         ),
         dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
@@ -72,29 +70,28 @@ bootstrap_rows = html.Div(
                 style_data=dict(backgroundColor="lavender")
             )
         ])),
+
+        dbc.Row([
+            dbc.Col(html.Div(id='output_container', children=[])),
+            dbc.Col(html.Div(id='Coordinates')),
+            dbc.Col(html.Div(id='Points', children=[]))
+        ]
+        ),
     ]
-),
-dbc.Row([
-    dbc.Col(html.Div(id='output_container', children=[])),
-    dbc.Col(html.Div(id='Coordinates')),
-    dbc.Col(html.Div(id='Points', children=[]))
-]
-),
-]
 )
 
 app.layout = bootstrap_rows
 
-             # ------------------------------------------------------------------------------
-             # Connect the map component
-             @ app.callback(
-    [Output('crash_table', 'data'),
-Output(component_id='output_container', component_property='children'),
-Output(component_id='crash_map', component_property='figure')],
-[Input('crash_map', 'clickData'),
-Input(component_id='slct_year', component_property='value')]
-)
 
+# ------------------------------------------------------------------------------
+# Connect the map component
+@app.callback(
+    [Output('crash_table', 'data'),
+     Output(component_id='output_container', component_property='children'),
+     Output(component_id='crash_map', component_property='figure')],
+    [Input('crash_map', 'clickData'),
+     Input(component_id='slct_year', component_property='value')]
+)
 def update_map(marker_selection, option_slctd):
     if option_slctd is not None:
         global accident_df
