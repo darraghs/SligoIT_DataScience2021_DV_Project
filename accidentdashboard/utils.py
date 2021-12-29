@@ -29,7 +29,7 @@ def cleanDF(dataframe):
 def getaccidentdf(year):
     csvfile = f"data/dft-road-casualty-statistics-accident-{year}.csv"
     print(f'Getting CSV File: {csvfile}')
-    accident_df = pd.read_csv()
+    accident_df = pd.read_csv(csvfile)
     cleanDF(accident_df)
     return accident_df
 
