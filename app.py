@@ -114,6 +114,9 @@ def update_accident_table(selection):
                     values.append('Data missing or out of range')
                 else:
                     print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
+            else:
+                labels.append(i.replace('_', ' '))
+                values.append(accident_data[i])
 
         DF_SIMPLE = pd.DataFrame({
             'labels': labels,
