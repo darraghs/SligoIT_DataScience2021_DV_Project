@@ -1,31 +1,57 @@
 import numpy
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
+import dash_bootstrap_components as dbc
 
 from accidentdashboard import utils, accident_data_lookup
 
 accident_df = utils.getaccidentdf(2020)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets=[dbc.themes.BOOTSTRAP]
 
 app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/')
 
 server = app.server
 
+badge = dbc.Button(
+    [
+        "Notifications",
+        dbc.Badge("4", color="light", text_color="primary", className="ms-1"),
+    ],
+    color="primary",
+)
+app.layout = dbc.Container(badge, fluid=True)
+
+row = html.Div(
+    [
+        dbc.Row(dbc.Col( html.H1("UK Accident Dashboard", style={'text-align': 'center'}) )),
+        dbc.Row(dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
+                                              options=[
+                                                  {"label": "2016", "value": 2016},
+                                                  {"label": "2017", "value": 2017},
+                                                  {"label": "2018", "value": 2018},
+                                                  {"label": "2019", "value": 2019},
+                                                  {"label": "2020", "value": 2020}],
+                                              multi=False,
+                                              value=2020,
+                                              style={'width': "40%"}
+                                              )))),
+        dbc.Row(
+            [
+                dbc.Col(html.Div("One of three columns")),
+                dbc.Col(html.Div("One of three columns")),
+                dbc.Col(html.Div("One of three columns")),
+            ]
+        ),
+    ]
+)
+
+
+
 app.layout = html.Div([
 
-    html.H1("UK Accident Dashboard", style={'text-align': 'center'}),
 
-    dcc.Dropdown(id="slct_year",
-                 options=[
-                     {"label": "2016", "value": 2016},
-                     {"label": "2017", "value": 2017},
-                     {"label": "2018", "value": 2018},
-                     {"label": "2019", "value": 2019},
-                     {"label": "2020", "value": 2020}],
-                 multi=False,
-                 value=2020,
-                 style={'width': "40%"}
-                 ),
+
+    row,
 
     html.Div(id='output_container', children=[]),
     html.Br(),
