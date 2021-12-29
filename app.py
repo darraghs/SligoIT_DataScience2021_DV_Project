@@ -27,7 +27,22 @@ tab1_content = dbc.Card(
 tab2_content = dbc.Card(
     dbc.CardBody(
         [
-            html.P("This is tab 2!", className="card-text"),
+            html.Div(dash_table.DataTable(
+                id='statistics_table',
+                columns=[{"name": i, "id": i}
+                         for i in ['labels', 'values']],
+                data=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'height': 'auto',
+                    # all three widths are needed
+                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                    'whiteSpace': 'normal',
+                    'textAlign': 'left'
+                },
+                style_header=dict(backgroundColor="paleturquoise"),
+                style_data=dict(backgroundColor="lavender")
+            )),
 
         ]
     ),
@@ -37,7 +52,22 @@ tab2_content = dbc.Card(
 tab3_content = dbc.Card(
     dbc.CardBody(
         [
-            html.P("This is tab 3!", className="card-text"),
+            html.Div(dash_table.DataTable(
+                id='crash_table',
+                columns=[{"name": i, "id": i}
+                         for i in ['labels', 'values']],
+                data=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'height': 'auto',
+                    # all three widths are needed
+                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                    'whiteSpace': 'normal',
+                    'textAlign': 'left'
+                },
+                style_header=dict(backgroundColor="paleturquoise"),
+                style_data=dict(backgroundColor="lavender")
+            ))
 
         ]
     ),
@@ -49,7 +79,7 @@ tabs = dbc.Tabs(
     [
         dbc.Tab(tab1_content, label="Graph"),
         dbc.Tab(tab2_content, label="Statistics"),
-        dbc.Tab(tab2_content, label="Details"),
+        dbc.Tab(tab3_content, label="Details"),
     ]
 )
 
@@ -139,22 +169,6 @@ bootstrap_rows = html.Div(
         dbc.Row([
             dbc.Col(html.Div(id='output_container', children=[]), width=2),
             dbc.Col(html.Div(id='Coordinates'), width=5),
-            dbc.Col(html.Div(dash_table.DataTable(
-                id='crash_table',
-                columns=[{"name": i, "id": i}
-                         for i in ['labels', 'values']],
-                data=[],
-                style_table={'overflowX': 'auto'},
-                style_cell={
-                    'height': 'auto',
-                    # all three widths are needed
-                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                    'whiteSpace': 'normal',
-                    'textAlign': 'left'
-                },
-                style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender")
-            )), width=5)
         ]
         ),
     ]

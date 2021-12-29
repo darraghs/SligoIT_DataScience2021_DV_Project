@@ -44,7 +44,7 @@ def getmapfigure(accident_df):
                                 custom_data=['accident_index'],
                                 color="accident_severity",
                                 color_discrete_sequence=crash_colours,
-                                zoom=5, height=800,
+                                zoom=5,
 
                                 )
 
@@ -53,7 +53,7 @@ def getmapfigure(accident_df):
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
     else:
-        fig = px.scatter_mapbox(data_frame=None, zoom=5, height=800)
+        fig = px.scatter_mapbox(data_frame=None, zoom=5,)
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_mapboxes(center_lat=55, center_lon=-3.5)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
