@@ -50,7 +50,7 @@ bootstrap_rows = html.Div(
                             # all three widths are needed
                             'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
                             'whiteSpace': 'normal',
-                            'textAlign'='left'
+                            'textAlign':'left'
                         },
                         style_header=dict(backgroundColor="paleturquoise"),
                         style_data=dict(backgroundColor="lavender")
