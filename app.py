@@ -119,24 +119,29 @@ app.layout = dbc.Container(
         Input('crash_map', 'clickData'),
      Input(component_id='slct_year', component_property='value')]
 )
-def update_map(severity, marker_selection, option_slctd):
-    if option_slctd is not None and len(severity)>0:
+def update_map(severity, marker_selection, year_selected):
+    if year_selected is not None and len(severity)>0:
         global accident_df
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if 'slct_year.value' == triggered_id:
-            accident_df = utils.getaccidentdf(option_slctd)
-            accident_df[accident_df['accident_index'].isin(severity)]
-            fig = utils.getmapfigure(accident_df)
+            fig = apply_map_fitlers(severity, year_selected)
             return [], dash.no_update, fig
         elif 'severity-input.value' == triggered_id:
-            accident_df = accident_df[accident_df['accident_index'].isin(severity)].copy()
-            fig = utils.getmapfigure(accident_df)
+            fig = apply_map_fitlers(severity, year_selected)
             return [], dash.no_update, fig
         else:
             return update_accident_table(marker_selection), dash.no_update, dash.no_update
     return dash.no_update, dash.no_update, dash.no_update
 
+
+def apply_map_fitlers(severities, year):
+    accident_df = utils.getaccidentdf(year)
+    print(f'Shape before filering: {accident_df.shape}')
+    accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
+    print(f'Shape after filering: {accident_df.shape}')
+    fig = utils.getmapfigure(accident_df)
+    return fig
 
 def update_accident_table(selection):
     if selection is not None:
