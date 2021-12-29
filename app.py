@@ -27,22 +27,6 @@ bootstrap_rows = html.Div(
         dbc.Row([
             dbc.Col(
                 html.Div([
-                    dbc.Row(
-                        dbc.Col(
-                            html.Div([
-                                dbc.Label("Severity"),
-                                dbc.Checklist(
-                                    options=[
-                                        {"label": "Fatal", "value": 1},
-                                        {"label": "Serious", "value": 2},
-                                        {"label": "Slight", "value": 3},
-                                    ],
-                                    value=[1, 2, 3],
-                                    id="severity-input",
-                                )
-                            ])
-                        )
-                    ),
 
                     dbc.Row(
                         dbc.Col(
@@ -60,7 +44,48 @@ bootstrap_rows = html.Div(
                                              )
                             ])
                         )
+                    ),
+
+                    dbc.Row(
+                        dbc.Col(
+                            html.Div([
+                                dbc.Label("Severity"),
+                                dbc.Checklist(
+                                    options=[
+                                        {"label": "Fatal", "value": 1},
+                                        {"label": "Serious", "value": 2},
+                                        {"label": "Slight", "value": 3},
+                                    ],
+                                    value=[1, 2, 3],
+                                    id="severity-input",
+                                )
+                            ])
+                        )
+                    ),
+                    dbc.Row(
+                        dbc.Col(
+                            html.Div([
+                                dbc.Label("Local Authority"),
+
+                                dcc.Checklist(id='local_auth_list',
+                                              options=[{'label':str(b[1]),'value':b[0]} for b in accident_data_lookup.accident_data_lookup['local_authority_district'].items],
+                                              value=[],
+                                              ),
+
+                                dcc.Dropdown(id="seelct_local_authority",
+                                             options=[
+                                                 {"label": "2016", "value": 2016},
+                                                 {"label": "2017", "value": 2017},
+                                                 {"label": "2018", "value": 2018},
+                                                 {"label": "2019", "value": 2019},
+                                                 {"label": "2020", "value": 2020}],
+                                             multi=False,
+                                             value=2020
+                                             )
+                            ])
+                        )
                     )
+
                 ])
                 , width=2
             ),
