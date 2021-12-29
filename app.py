@@ -93,6 +93,7 @@ def update_map(marker_selection, option_slctd):
         fig = utils.getmapfigure(accident_df)
         return [], container, fig
     else:
+        print(f'marker: {marker_selection}, option: {option_slctd}')
         return update_accident_table(marker_selection, accident_df), dash.no_update, dash.no_update
 
 
