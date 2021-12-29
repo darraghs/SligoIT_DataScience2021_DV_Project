@@ -94,13 +94,14 @@ def update_map(marker_selection, option_slctd):
         return [], container, fig
     else:
         print(f'marker: {marker_selection}, option: {option_slctd}')
-        return update_accident_table(marker_selection, accident_df), dash.no_update, dash.no_update
+        return update_accident_table(marker_selection), dash.no_update, dash.no_update
 
 
-def update_accident_table(selection, accidentdf):
+def update_accident_table(selection):
     if selection is not None:
+        global accident_df
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accidentdf[accidentdf['accident_index'] == accident_index].copy()
+        accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
 
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
