@@ -1132,7 +1132,8 @@ accident_data_lookup = {
         2: 'A(M)',
         3: 'A',
         4: 'B',
-        5: 'C'
+        5: 'C',
+        6: 'Unclassified'
     },
 
     'road_type': {

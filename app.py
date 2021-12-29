@@ -1,4 +1,5 @@
 import numpy
+import pandas as pd
 from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
 import dash_bootstrap_components as dbc
 
@@ -43,7 +44,7 @@ row = html.Div(
                     dash_table.DataTable(
                         id='table',
                         columns=[{"name": i, "id": i}
-                                 for i in accident_data_lookup.accident_data_lookup.keys()],
+                                 ['labels', 'values']],
                         data=[],
                         style_cell=dict(textAlign='left'),
                         style_header=dict(backgroundColor="paleturquoise"),
@@ -117,7 +118,14 @@ def update_accident_table(selection):
                 else:
                     print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
 
-        return accident_data.to_dict('records')
+        conv_array = accident_data.values.tolist()
+        key_array = list(accident_data.keys())
+
+        DF_SIMPLE = pd.DataFrame({
+            'labels': key_array,
+            'values':  conv_array[0]
+        })
+        return DF_SIMPLE.to_dict('records')
 
 
 @app.callback(
