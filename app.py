@@ -84,7 +84,7 @@ def update_accident_table(selection):
                 elif isinstance(value, int) and value == -1:
                     accident_data[i] = 'Data missing or out of range'
                 else:
-                    print(f' Could not find value: {value} in lookup: {lookup} for key: {i}')
+                    print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
 
         return accident_data.to_dict('records')
 
