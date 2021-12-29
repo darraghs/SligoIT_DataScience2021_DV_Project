@@ -13,6 +13,46 @@ app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP],
 
 server = app.server
 
+
+tab1_content = dbc.Card(
+    dbc.CardBody(
+        [
+            html.P("This is tab 1!", className="card-text"),
+
+        ]
+    ),
+    className="mt-3",
+)
+
+tab2_content = dbc.Card(
+    dbc.CardBody(
+        [
+            html.P("This is tab 2!", className="card-text"),
+
+        ]
+    ),
+    className="mt-3",
+)
+
+tab3_content = dbc.Card(
+    dbc.CardBody(
+        [
+            html.P("This is tab 3!", className="card-text"),
+
+        ]
+    ),
+    className="mt-3",
+)
+
+
+tabs = dbc.Tabs(
+    [
+        dbc.Tab(tab1_content, label="Graph"),
+        dbc.Tab(tab2_content, label="Statistics"),
+        dbc.Tab(tab2_content, label="Details"),
+    ]
+)
+
 # HTML Layout using Bootstrap
 bootstrap_rows = html.Div(
     [
@@ -88,7 +128,7 @@ bootstrap_rows = html.Div(
             ),
 
             dbc.Col(html.Div([
-                html.H3("Graphs")
+                tabs,
             ]), width=5),
         ]),
         dbc.Row([
