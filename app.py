@@ -93,6 +93,9 @@ def update_accident_table(selection):
         accident_index = selection["points"][0]["customdata"][0]
         accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
 
+        labels = []
+        values = []
+
         for i in accident_data:
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
@@ -101,20 +104,20 @@ def update_accident_table(selection):
                     value = value.item()
 
                 if isinstance(value, int) and value >= 0 and value in lookup:
-                    accident_data[i] = lookup[value]
+                    labels.append(accident_data[i].replace('_', ' '))
+                    values.append(lookup[value])
                 elif isinstance(value, str) and value in lookup:
-                    accident_data[i] = lookup[value]
+                    labels.append(accident_data[i].replace('_', ' '))
+                    values.append(lookup[value])
                 elif isinstance(value, int) and value == -1:
-                    accident_data[i] = 'Data missing or out of range'
+                    labels.append(accident_data[i].replace('_', ' '))
+                    values.append('Data missing or out of range')
                 else:
                     print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
-
-        conv_array = accident_data.values.tolist()
-        key_array = list(accident_data.keys())
-
+                    
         DF_SIMPLE = pd.DataFrame({
-            'labels': key_array,
-            'values': conv_array[0]
+            'labels': labels,
+            'values': values
         })
         return DF_SIMPLE.to_dict('records')
     return []
