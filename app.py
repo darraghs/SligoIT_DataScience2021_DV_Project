@@ -20,14 +20,9 @@ bootstrap_rows = html.Div(
         dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(html.Hr()),
         dbc.Row([
-            dbc.Col(html.H3("Filter By"), width=2),
-            dbc.Col(html.H3("Map"), width=5),
-            dbc.Col(html.H3("Graphs"), width=5)
-        ]),
-        dbc.Row([
             dbc.Col(
                 html.Div([
-
+                    html.H3("Filter By"),
                     dbc.Row(
                         dbc.Col(
                             html.Div([
@@ -93,7 +88,7 @@ bootstrap_rows = html.Div(
             ),
 
             dbc.Col(html.Div([
-
+                html.H3("Graphs")
             ]), width=5),
         ]),
         dbc.Row([
