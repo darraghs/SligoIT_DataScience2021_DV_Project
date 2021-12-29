@@ -40,8 +40,15 @@ tab2_content = dbc.Card(
                     'whiteSpace': 'normal',
                     'textAlign': 'left'
                 },
-                style_header=dict(backgroundColor="paleturquoise"),
-                style_data=dict(backgroundColor="lavender"),
+                style_header=dict(backgroundColor="lightgrey"),
+                style_data=dict(backgroundColor="white"),
+                style_cell_conditional=[
+                    {
+                        'if': {'column_id': c},
+                        'textAlign': 'right'
+                    } for c in ['values']
+                ],
+                style_as_list_view=True,
                 page_size=20
             )),
 
@@ -171,15 +178,8 @@ bootstrap_rows = html.Div(
             ]), width=5),
         ]),
         dbc.Row([
-            dbc.Col(html.H3("Filter"), width=2),
-            dbc.Col(html.H3("Coordinates"), width=5),
-            dbc.Col(html.H3("Individual Crash"), width=5)
+            dbc.Col(html.Div(id='Coordinates'), width=10),
         ]),
-        dbc.Row([
-            dbc.Col(html.Div(id='output_container', children=[]), width=2),
-            dbc.Col(html.Div(id='Coordinates'), width=5),
-        ]
-        ),
     ]
 )
 
@@ -192,7 +192,6 @@ app.layout = dbc.Container(
 # Connect the map component
 @app.callback(
     [Output('crash_table', 'data'),
-     Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
     [Input(component_id='select_year', component_property='value'),
      Input('severity-input', 'value'),
