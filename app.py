@@ -80,7 +80,8 @@ app.layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    [Output(component_id='output_container', component_property='children'),
+    [  Output('crash_table', 'data'),
+        Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
     [Input(component_id='slct_year', component_property='value')]
 )
@@ -90,8 +91,7 @@ def update_map(option_slctd):
     container = "The year chosen by user was: {}".format(option_slctd)
     fig = utils.getmapfigure(accident_df)
 
-    update_accident_table(None)
-    return container, fig
+    return [], container, fig
 
 
 @app.callback(
