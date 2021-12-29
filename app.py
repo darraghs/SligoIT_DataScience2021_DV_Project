@@ -1,13 +1,15 @@
+import dash
+import dash_bootstrap_components as dbc
 import numpy
 import pandas as pd
-from dash import Dash, dcc, html, Input, Output, dash_table, callback_context  # pip install dash (version 2.0.0 or higher)
-import dash_bootstrap_components as dbc
+from dash import Dash, dcc, html, Input, Output, dash_table, \
+    callback_context  # pip install dash (version 2.0.0 or higher)
 
 from accidentdashboard import utils, accident_data_lookup
 
 accident_df = utils.getaccidentdf(2020)
 
-external_stylesheets=[dbc.themes.BOOTSTRAP]
+external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/')
 
@@ -24,7 +26,7 @@ app.layout = dbc.Container(badge, fluid=True)
 
 row = html.Div(
     [
-        dbc.Row(dbc.Col( html.H1("UK Accident Dashboard", style={'text-align': 'center'}) )),
+        dbc.Row(dbc.Col(html.H1("UK Accident Dashboard", style={'text-align': 'center'}))),
         dbc.Row(dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
                                               options=[
                                                   {"label": "2016", "value": 2016},
@@ -56,17 +58,12 @@ row = html.Div(
     ]
 )
 
-
-
 app.layout = html.Div([
-
-
 
     row,
 
     html.Div(id='output_container', children=[]),
     html.Br(),
-
 
     html.Div(id='Coordinates'),
     html.Div(id='Points', children=[]),
@@ -80,25 +77,23 @@ app.layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    [  Output('crash_table', 'data'),
-        Output(component_id='output_container', component_property='children'),
+    [Output('crash_table', 'data'),
+     Output(component_id='output_container', component_property='children'),
      Output(component_id='crash_map', component_property='figure')],
     [Input('crash_map', 'clickData'),
      Input(component_id='slct_year', component_property='value')]
 )
 def update_map(marker_selection, option_slctd):
-
     global accident_df
 
     triggered_id = callback_context.triggered[0]['prop_id']
-    container = "The year chosen by user was: {}".format(option_slctd)
-    accident_df = utils.getaccidentdf(option_slctd)
-    fig = utils.getmapfigure(accident_df)
-
     if 'slct_year.value' == triggered_id:
+        container = "The year chosen by user was: {}".format(option_slctd)
+        accident_df = utils.getaccidentdf(option_slctd)
+        fig = utils.getmapfigure(accident_df)
         return [], container, fig
-    else :
-        return update_accident_table(marker_selection, accident_df), container, fig
+    else:
+        return update_accident_table(marker_selection, accident_df), dash.no_update, dash.no_update
 
 
 def update_accident_table(selection, accidentdf):
@@ -127,7 +122,7 @@ def update_accident_table(selection, accidentdf):
 
         DF_SIMPLE = pd.DataFrame({
             'labels': key_array,
-            'values':  conv_array[0]
+            'values': conv_array[0]
         })
         return DF_SIMPLE.to_dict('records')
     return []
