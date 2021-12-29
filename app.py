@@ -15,19 +15,10 @@ app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathnam
 
 server = app.server
 
-badge = dbc.Button(
-    [
-        "Notifications",
-        dbc.Badge("4", color="light", text_color="primary", className="ms-1"),
-    ],
-    color="primary",
-)
-app.layout = dbc.Container(badge, fluid=True)
-
-row = html.Div(
+bootstrap_rows = html.Div(
     [
         dbc.Row(dbc.Col(html.H1("UK Accident Dashboard", style={'text-align': 'center'}))),
-        dbc.Row(dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
+        dbc.Row([ dbc.Col(html.Div("Select year: ")), dbc.Col(html.Div(dcc.Dropdown(id="slct_year",
                                               options=[
                                                   {"label": "2016", "value": 2016},
                                                   {"label": "2017", "value": 2017},
@@ -37,11 +28,17 @@ row = html.Div(
                                               multi=False,
                                               value=2020,
                                               style={'width': "40%"}
-                                              )))),
+                                              )))]),
+        dbc.Row([
+            dbc.Col( html.Div("Map")),
+            dbc.Col(html.Div("Graphs")),
+            dbc.Col(html.Div("Individual Accident Info"))
+        ]
+        ),
         dbc.Row(
             [
                 dbc.Col(html.Div(dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df)))),
-                dbc.Col(html.Div("One of three columns")),
+                dbc.Col(html.Div("Graphs")),
                 dbc.Col(html.Div([
                     dash_table.DataTable(
                         id='crash_table',
@@ -55,23 +52,16 @@ row = html.Div(
                 ])),
             ]
         ),
+        dbc.Row([
+            dbc.Col( html.Div(id='output_container', children=[])),
+            dbc.Col(html.Div(id='Coordinates')),
+            dbc.Col(html.Div(id='Points', children=[]))
+            ]
+        ),
     ]
 )
 
-app.layout = html.Div([
-
-    row,
-
-    html.Div(id='output_container', children=[]),
-    html.Br(),
-
-    html.Div(id='Coordinates'),
-    html.Div(id='Points', children=[]),
-    html.Div([
-
-    ])
-
-])
+app.layout = bootstrap_rows
 
 
 # ------------------------------------------------------------------------------
@@ -93,7 +83,6 @@ def update_map(marker_selection, option_slctd):
         fig = utils.getmapfigure(accident_df)
         return [], container, fig
     else:
-        print(f'marker: {marker_selection}, option: {option_slctd}')
         return update_accident_table(marker_selection), dash.no_update, dash.no_update
 
 
