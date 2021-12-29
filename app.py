@@ -9,12 +9,11 @@ from accidentdashboard import utils, accident_data_lookup
 
 accident_df = utils.getaccidentdf(2020)
 
-external_stylesheets = [dbc.themes.BOOTSTRAP]
-
-app = Dash(__name__, external_stylesheets=external_stylesheets, url_base_pathname='/dav2021/')
+app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP], url_base_pathname='/dav2021/')
 
 server = app.server
 
+# HTML Layout using Bootstrap
 bootstrap_rows = html.Div(
     [
         dbc.Row(dbc.Col(html.H1("UK Accident Dashboard", style={'text-align': 'center'}))),
@@ -65,7 +64,7 @@ app.layout = bootstrap_rows
 
 
 # ------------------------------------------------------------------------------
-# Connect the Plotly graphs with Dash Components
+# Connect the map component
 @app.callback(
     [Output('crash_table', 'data'),
      Output(component_id='output_container', component_property='children'),
@@ -74,16 +73,18 @@ app.layout = bootstrap_rows
      Input(component_id='slct_year', component_property='value')]
 )
 def update_map(marker_selection, option_slctd):
-    global accident_df
+    if option_slctd is not None:
+        global accident_df
 
-    triggered_id = callback_context.triggered[0]['prop_id']
-    if 'slct_year.value' == triggered_id:
-        container = "The year chosen by user was: {}".format(option_slctd)
-        accident_df = utils.getaccidentdf(option_slctd)
-        fig = utils.getmapfigure(accident_df)
-        return [], container, fig
-    else:
-        return update_accident_table(marker_selection), dash.no_update, dash.no_update
+        triggered_id = callback_context.triggered[0]['prop_id']
+        if 'slct_year.value' == triggered_id:
+            container = "The year chosen by user was: {}".format(option_slctd)
+            accident_df = utils.getaccidentdf(option_slctd)
+            fig = utils.getmapfigure(accident_df)
+            return [], container, fig
+        else:
+            return update_accident_table(marker_selection), dash.no_update, dash.no_update
+    return dash.no_update, dash.no_update, dash.no_update
 
 
 def update_accident_table(selection):
