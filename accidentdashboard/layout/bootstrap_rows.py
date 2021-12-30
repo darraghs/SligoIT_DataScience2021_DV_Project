@@ -1,8 +1,8 @@
 import dash_bootstrap_components as dbc
+from dash import dcc, html
+
+from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import app_tabs
-from dash import Dash, dcc, html, Input, Output, dash_table
-
-
 
 # HTML Layout using Bootstrap
 bootstrap_rows = html.Div(

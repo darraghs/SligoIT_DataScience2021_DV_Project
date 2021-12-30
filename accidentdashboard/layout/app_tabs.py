@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
-from dash import Dash, dcc, html
-# Tabs for visual content
+from dash import dcc, html
 
+# Tabs for visual content
 tab1_content = dbc.Card(
     dbc.CardBody(
         [
@@ -21,7 +21,7 @@ tab1_content = dbc.Card(
                          multi=False,
                          value=[],
                          ),
-            #dcc.Graph(id='graph_viz', figure=None, config={'editable': False,
+            # dcc.Graph(id='graph_viz', figure=None, config={'editable': False,
             #                                                                          'displaylogo': False,
             #                                                                          'modeBarButtonsToRemove': [
             #                                                                              'lasso2d',
