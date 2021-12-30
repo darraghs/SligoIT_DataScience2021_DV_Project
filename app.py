@@ -22,7 +22,7 @@ tab1_content = dbc.Card(
                          options=[{'label': str(b[1]), 'value': b[0]} for b in
                                   accident_data_lookup.accident_data_lookup[
                                       'local_authority_district'].items()],
-                         multi=True,
+                         multi=False,
                          value=[],
                          ),
             dbc.Label("Y-Axis"),
@@ -30,7 +30,7 @@ tab1_content = dbc.Card(
                          options=[{'label': str(b[1]), 'value': b[0]} for b in
                                   accident_data_lookup.accident_data_lookup[
                                       'local_authority_district'].items()],
-                         multi=True,
+                         multi=False,
                          value=[],
                          ),
 
