@@ -16,7 +16,7 @@ app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP],
 server = app.server
 
 app.layout = dbc.Container(
-    bootstrap_rows.bootstrap_rows, fluid=True
+    bootstrap_rows.bootstrap_rows(accident_df), fluid=True
 )
 
 
