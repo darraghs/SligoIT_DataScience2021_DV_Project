@@ -194,6 +194,7 @@ bootstrap_rows = html.Div(
             dbc.Col(
                 html.Div(
                     dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'editable': False,
+                                                                                              'displayModeBar': True,
                                                                                               'displaylogo': False,
                                                                                               'modeBarButtonsToRemove': [
                                                                                                   'lasso2d',
@@ -308,6 +309,7 @@ def update_accident_table(selection):
     Input('crash_map', 'relayoutData'))
 def display_relayout_data(relayoutData):
     try:
+        print(f'Map Data: {relayoutData}')
         coords = relayoutData['mapbox._derived']['coordinates']
         lon_min = coords[0][0]
         lon_max = coords[1][0]
