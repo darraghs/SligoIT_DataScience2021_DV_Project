@@ -7,6 +7,7 @@ from dash import Dash, dcc, html, Input, Output, dash_table, \
 
 from accidentdashboard import utils
 from accidentdashboard.data_lookup import accident_data_lookup
+from accidentdashboard.layout import bootstrap_rows
 
 accident_df = utils.getaccidentdf(2020)
 
@@ -14,212 +15,8 @@ app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP],
 
 server = app.server
 
-# Tabs for visual content
-tab1_content = dbc.Card(
-    dbc.CardBody(
-        [
-            dbc.Label("X-Axis"),
-            dcc.Dropdown(id="graph_x_select",
-                         options=[{'label': str(b[1]), 'value': b[0]} for b in
-                                  accident_data_lookup.accident_data_lookup[
-                                      'local_authority_district'].items()],
-                         multi=False,
-                         value=[],
-                         ),
-            dbc.Label("Y-Axis"),
-            dcc.Dropdown(id="graph_y_select",
-                         options=[{'label': str(b[1]), 'value': b[0]} for b in
-                                  accident_data_lookup.accident_data_lookup[
-                                      'local_authority_district'].items()],
-                         multi=False,
-                         value=[],
-                         ),
-            #dcc.Graph(id='graph_viz', figure=None, config={'editable': False,
-            #                                                                          'displaylogo': False,
-            #                                                                          'modeBarButtonsToRemove': [
-            #                                                                              'lasso2d',
-            #                                                                              'toImage',
-            #                                                                              'autoScale2d',
-            #                                                                              'resetScale2d',
-            #                                                                              'select2d'
-            #                                                                          ]
-            #                                                                          }, )
-
-        ], style={'min-height': '750px'}
-    ),
-    className="mt-3",
-)
-
-tab2_content = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Div(dash_table.DataTable(
-                id='statistics_table',
-                columns=[{"name": i, "id": i}
-                         for i in ['labels', 'values']],
-                data=[],
-                style_table={'overflowX': 'auto'},
-                style_cell={
-                    'height': 'auto',
-                    # all three widths are needed
-                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                    'whiteSpace': 'normal',
-                    'textAlign': 'left'
-                },
-                style_header=dict(backgroundColor="lightgrey"),
-                style_data=dict(backgroundColor="white"),
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': c},
-                        'textAlign': 'right'
-                    } for c in ['values']
-                ],
-                style_as_list_view=True,
-                page_size=20
-            )),
-
-        ], style={'min-height': '750px'}
-    ),
-    className="mt-3",
-)
-
-tab3_content = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Div(dash_table.DataTable(
-                id='crash_table',
-                columns=[{"name": i, "id": i}
-                         for i in ['labels', 'values']],
-                data=[],
-                style_table={'overflowX': 'auto'},
-                style_cell={
-                    'height': 'auto',
-                    # all three widths are needed
-                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                    'whiteSpace': 'normal',
-                    'textAlign': 'left'
-                },
-                style_header=dict(backgroundColor="lightgrey"),
-                style_data=dict(backgroundColor="white"),
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': c},
-                        'textAlign': 'right'
-                    } for c in ['values']
-                ],
-                style_as_list_view=True,
-                page_size=20
-            ))
-
-        ], style={'min-height': '750px'}
-    ),
-    className="mt-3",
-)
-
-tabs = dbc.Tabs(
-    [
-        dbc.Tab(tab1_content, label="Graph"),
-        dbc.Tab(tab2_content, label="Statistics"),
-        dbc.Tab(tab3_content, label="Details"),
-    ]
-)
-
-# HTML Layout using Bootstrap
-bootstrap_rows = html.Div(
-    [
-        dbc.Row(html.Hr()),
-        dbc.Row(dbc.Col(html.H2("UK Accident Dashboard", style={'text-align': 'center'}))),
-        dbc.Row(html.Hr()),
-        dbc.Row([
-            dbc.Col(
-                html.Div([
-                    html.H5("Filter By"),
-                    dbc.Row(
-                        dbc.Col(
-                            html.Div([
-                                html.Hr(),
-                                dbc.Label("Year"),
-                                dcc.Dropdown(id="select_year",
-                                             options=[
-                                                 {"label": "2016", "value": 2016},
-                                                 {"label": "2017", "value": 2017},
-                                                 {"label": "2018", "value": 2018},
-                                                 {"label": "2019", "value": 2019},
-                                                 {"label": "2020", "value": 2020}],
-                                             multi=False,
-                                             value=2020
-                                             )
-                            ])
-                        )
-                    ),
-
-                    dbc.Row(
-                        dbc.Col(
-                            html.Div([
-                                html.Hr(),
-                                dbc.Label("Severity"),
-                                dbc.Checklist(
-                                    options=[
-                                        {"label": "Fatal", "value": 1},
-                                        {"label": "Serious", "value": 2},
-                                        {"label": "Slight", "value": 3},
-                                    ],
-                                    value=[1, 2, 3],
-                                    id="severity-input",
-                                )
-                            ])
-                        )
-                    ),
-                    dbc.Row(
-                        dbc.Col(
-                            html.Div([
-                                html.Hr(),
-                                dbc.Label("Local Authority"),
-
-                                dcc.Dropdown(id="select_local_authority",
-                                             options=[{'label': str(b[1]), 'value': b[0]} for b in
-                                                      accident_data_lookup.accident_data_lookup[
-                                                          'local_authority_district'].items()],
-                                             multi=True,
-                                             value=[],
-                                             ),
-
-                            ])
-                        )
-                    )
-
-                ])
-                , width=2
-            ),
-
-            dbc.Col(
-                html.Div(
-                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'editable': False,
-                                                                                              'displayModeBar': True,
-                                                                                              'displaylogo': False,
-                                                                                              'modeBarButtonsToRemove': [
-                                                                                                  'lasso2d',
-                                                                                                  'toImage',
-                                                                                                  'autoScale2d',
-                                                                                                  'resetScale2d',
-                                                                                                  'select2d'
-                                                                                              ]
-                                                                                              }, )
-                ), width=5
-            ),
-
-            dbc.Col(html.Div([
-                tabs,
-            ]), width=5),
-        ]),
-        dbc.Row([
-            dbc.Col(html.Div(id='Coordinates'), width=10),
-        ]),
-    ]
-)
-
 app.layout = dbc.Container(
-    bootstrap_rows, fluid=True
+    bootstrap_rows.bootstrap_rows, fluid=True
 )
 
 
@@ -279,20 +76,20 @@ def update_accident_table(selection):
                             value = value.item()
 
                         if isinstance(value, int) and value >= 0 and value in lookup:
-                            labels.append(i.replace('_', ' '))
+                            labels.append(i.replace('_', ' ').capitalize())
                             values.append(lookup[value])
                         elif isinstance(value, str) and value in lookup:
-                            labels.append(i.replace('_', ' '))
+                            labels.append(i.replace('_', ' ').capitalize())
                             values.append(lookup[value])
                         elif isinstance(value, int) and value == -1:
-                            labels.append(i.replace('_', ' '))
+                            labels.append(i.replace('_', ' ').capitalize())
                             values.append('Data missing or out of range')
                         else:
                             print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
                     else:
                         print(f'No values for label: {i}, dataframe shape: {accident_data.shape}')
                 else:
-                    labels.append(i.replace('_', ' '))
+                    labels.append(i.replace('_', ' ').capitalize())
                     values.append(accident_data[i])
 
             DF_SIMPLE = pd.DataFrame({
@@ -301,7 +98,7 @@ def update_accident_table(selection):
             })
             return DF_SIMPLE.to_dict('records')
         else:
-            print(f'Failed to find accident index: ${accident_index} in accident data: {accident_df.head()}')
+            print(f'Failed to find accident index: {accident_index} in accident data: {accident_df.head()}')
     return []
 
 
