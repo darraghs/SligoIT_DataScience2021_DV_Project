@@ -262,39 +262,43 @@ def update_accident_table(selection):
         accident_index = selection["points"][0]["customdata"][0]
         accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
 
-        labels = []
-        values = []
+        if len(accident_data['accident_index']) > 0:
 
-        for i in accident_data:
-            if i in accident_data_lookup.accident_data_lookup.keys():
-                lookup = accident_data_lookup.accident_data_lookup[i]
-                if len(accident_data[i].values) > 0:
-                    value = accident_data[i].values[0]
-                    if isinstance(value, numpy.int64):
-                        value = value.item()
+            labels = []
+            values = []
 
-                    if isinstance(value, int) and value >= 0 and value in lookup:
-                        labels.append(i.replace('_', ' '))
-                        values.append(lookup[value])
-                    elif isinstance(value, str) and value in lookup:
-                        labels.append(i.replace('_', ' '))
-                        values.append(lookup[value])
-                    elif isinstance(value, int) and value == -1:
-                        labels.append(i.replace('_', ' '))
-                        values.append('Data missing or out of range')
+            for i in accident_data:
+                if i in accident_data_lookup.accident_data_lookup.keys():
+                    lookup = accident_data_lookup.accident_data_lookup[i]
+                    if len(accident_data[i].values) > 0:
+                        value = accident_data[i].values[0]
+                        if isinstance(value, numpy.int64):
+                            value = value.item()
+
+                        if isinstance(value, int) and value >= 0 and value in lookup:
+                            labels.append(i.replace('_', ' '))
+                            values.append(lookup[value])
+                        elif isinstance(value, str) and value in lookup:
+                            labels.append(i.replace('_', ' '))
+                            values.append(lookup[value])
+                        elif isinstance(value, int) and value == -1:
+                            labels.append(i.replace('_', ' '))
+                            values.append('Data missing or out of range')
+                        else:
+                            print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
                     else:
-                        print(f' Could not find value: {value}, type: {type(value)} in lookup: {lookup} for key: {i}')
+                        print(f'No values for label: {i}, dataframe shape: {accident_data.shape}')
                 else:
-                    print(f'No values for label: {i}')
-            else:
-                labels.append(i.replace('_', ' '))
-                values.append(accident_data[i])
+                    labels.append(i.replace('_', ' '))
+                    values.append(accident_data[i])
 
-        DF_SIMPLE = pd.DataFrame({
-            'labels': labels,
-            'values': values
-        })
-        return DF_SIMPLE.to_dict('records')
+            DF_SIMPLE = pd.DataFrame({
+                'labels': labels,
+                'values': values
+            })
+            return DF_SIMPLE.to_dict('records')
+        else:
+            print(f'Failed to find accident index: ${accident_index} in accident data: {accident_df.head()}')
     return []
 
 
