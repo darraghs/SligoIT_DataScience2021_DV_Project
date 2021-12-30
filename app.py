@@ -33,6 +33,16 @@ tab1_content = dbc.Card(
                          multi=False,
                          value=[],
                          ),
+            dcc.Graph(id='graph_viz', figure=[], config={'editable': False,
+                                                                                      'displaylogo': False,
+                                                                                      'modeBarButtonsToRemove': [
+                                                                                          'lasso2d',
+                                                                                          'toImage',
+                                                                                          'autoScale2d',
+                                                                                          'resetScale2d',
+                                                                                          'select2d'
+                                                                                      ]
+                                                                                      }, )
 
         ], style={'min-height': '750px'}
     ),
