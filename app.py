@@ -5,7 +5,8 @@ import pandas as pd
 from dash import Dash, dcc, html, Input, Output, dash_table, \
     callback_context  # pip install dash (version 2.0.0 or higher)
 
-from accidentdashboard import utils, accident_data_lookup
+from accidentdashboard import utils
+from accidentdashboard.data_lookup import accident_data_lookup
 
 accident_df = utils.getaccidentdf(2020)
 

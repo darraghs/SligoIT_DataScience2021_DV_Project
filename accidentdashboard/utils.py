@@ -44,21 +44,21 @@ def getmapfigure(accident_df, reset_zoom=False):
                                 custom_data=['accident_index'],
                                 color="accident_severity",
                                 color_discrete_sequence=crash_colours,
-                                zoom=5, height=800,
+                                zoom=4.722400193392954, height=800,
 
                                 )
 
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_layout(showlegend=False)
         fig.update_layout()
-        fig.update_mapboxes(center_lat=55.00366, center_lon=-2.547855)
+        fig.update_mapboxes(center_lat=55.61817975121974, center_lon=-3.4849391102729896)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
     else:
-        fig = px.scatter_mapbox(data_frame=None, zoom=5, height=800)
+        fig = px.scatter_mapbox(data_frame=None, zoom=4.722400193392954, height=800)
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_layout(showlegend=False)
-        fig.update_mapboxes(center_lat=55.00366, center_lon=-2.547855)
+        fig.update_mapboxes(center_lat=55.61817975121974, center_lon=-3.4849391102729896)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
 
