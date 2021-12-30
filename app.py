@@ -234,7 +234,7 @@ app.layout = dbc.Container(
 )
 def update_map(year_selected, severity, local_auth_selected, marker_selection, ):
     if year_selected is not None and len(severity) > 0:
-        global accident_df
+
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
@@ -246,6 +246,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, )
 
 
 def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
+    global accident_df
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
     accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
