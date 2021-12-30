@@ -190,8 +190,7 @@ bootstrap_rows = html.Div(
                                                                                                   'toImage',
                                                                                                   'autoScale2d',
                                                                                                   'resetScale2d',
-                                                                                                  'hoverClosestCartesian',
-                                                                                                  'hoverCompareCartesian'
+                                                                                                  'select2d'
                                                                                               ]
                                                                                               }, )
                 ), width=5
