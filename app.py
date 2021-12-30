@@ -183,9 +183,17 @@ bootstrap_rows = html.Div(
 
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'editable': False}, modeBarButtonsToRemove = list(
-                        'lasso2d'
-                    ))
+                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'editable': False,
+                                                                                              'displaylogo': False,
+                                                                                              'modeBarButtonsToRemove': [
+                                                                                                  'lasso2d',
+                                                                                                  'toImage',
+                                                                                                  'autoScale2d',
+                                                                                                  'resetScale2d',
+                                                                                                  'hoverClosestCartesian',
+                                                                                                  'hoverCompareCartesian'
+                                                                                              ]
+                                                                                              }, )
                 ), width=5
             ),
 
