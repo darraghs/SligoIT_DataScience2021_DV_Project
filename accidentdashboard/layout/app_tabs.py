@@ -1,6 +1,8 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
+from accidentdashboard.data_lookup import accident_data_lookup
+
 # Tabs for visual content
 tab1_content = dbc.Card(
     dbc.CardBody(
