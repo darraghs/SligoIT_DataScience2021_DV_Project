@@ -49,13 +49,13 @@ def getmapfigure(accident_df, reset_zoom=False):
                                 )
 
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
-        fig.update_mapboxes(center_lat=54.00366, center_lon=-2.547855)
+        fig.update_mapboxes(center_lat=47.513456972524773, center_lon=-2.547855)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
     else:
         fig = px.scatter_mapbox(data_frame=None, zoom=5, height=800)
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
-        fig.update_mapboxes(center_lat=54.00366, center_lon=-2.547855)
+        fig.update_mapboxes(center_lat=47.513456972524773, center_lon=-2.547855)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
 
