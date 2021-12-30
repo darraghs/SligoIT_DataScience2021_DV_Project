@@ -3,6 +3,7 @@ from dash import dcc, html
 
 from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import app_tabs
+from accidentdashboard import utils
 
 # HTML Layout using Bootstrap
 bootstrap_rows = html.Div(

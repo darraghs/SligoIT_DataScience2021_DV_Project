@@ -3,6 +3,7 @@ from dash import dcc, html, dash_table
 
 from accidentdashboard.data_lookup import accident_data_lookup
 
+
 # Tabs for visual content
 tab1_content = dbc.Card(
     dbc.CardBody(
