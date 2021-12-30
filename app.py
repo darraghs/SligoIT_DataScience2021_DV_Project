@@ -52,7 +52,9 @@ def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
     if len(local_auth_selected) > 0:
         accident_df = accident_df[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
     print(f'Shape after filering: {accident_df.shape}')
-    fig = utils.getmapfigure(accident_df, reset_zoom)
+
+    zoom_center = utils.utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
+    fig = figure=utils.getmapfigure(accident_df, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
     return fig
 
 

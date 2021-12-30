@@ -8,6 +8,8 @@ from accidentdashboard import utils
 # HTML Layout using Bootstrap
 
 def get_bootstrap_rows(accident_df):
+
+    zoom_center = utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
     bootstrap_rows = html.Div(
         [
             dbc.Row(html.Hr()),
@@ -77,7 +79,7 @@ def get_bootstrap_rows(accident_df):
 
                 dbc.Col(
                     html.Div(
-                        dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'editable': False,
+                        dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0]), config={'editable': False,
                                                                                                   'displayModeBar': True,
                                                                                                   'displaylogo': False,
                                                                                                   'modeBarButtonsToRemove': [

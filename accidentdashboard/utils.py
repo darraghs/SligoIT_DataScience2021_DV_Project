@@ -36,7 +36,7 @@ def getaccidentdf(year):
     return accident_df
 
 
-def getmapfigure(accident_df, reset_zoom=False):
+def getmapfigure(accident_df, lat=55.61817975121974, lon=-3.4849391102729896, zoom=4.722400193392954, reset_zoom=False):
     token = open(".mapbox_token").read()
     if accident_df is not None:
         crash_colours = ['yellow', 'orange', 'red']
@@ -46,21 +46,21 @@ def getmapfigure(accident_df, reset_zoom=False):
                                 custom_data=['accident_index'],
                                 color="accident_severity",
                                 color_discrete_sequence=crash_colours,
-                                zoom=4.722400193392954, height=800,
+                                zoom=zoom, height=800,
 
                                 )
 
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_layout(showlegend=False)
         fig.update_layout()
-        fig.update_mapboxes(center_lat=55.61817975121974, center_lon=-3.4849391102729896)
+        fig.update_mapboxes(center_lat=lat, center_lon=lon)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
     else:
-        fig = px.scatter_mapbox(data_frame=None, zoom=4.722400193392954, height=800)
+        fig = px.scatter_mapbox(data_frame=None, zoom=zoom, height=800)
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_layout(showlegend=False)
-        fig.update_mapboxes(center_lat=55.61817975121974, center_lon=-3.4849391102729896)
+        fig.update_mapboxes(center_lat=lat, center_lon=lon)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
 
