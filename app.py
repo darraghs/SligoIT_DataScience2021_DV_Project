@@ -13,7 +13,7 @@ app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP],
 
 server = app.server
 
-
+# Tabs for visual content
 tab1_content = dbc.Card(
     dbc.CardBody(
         [
@@ -34,7 +34,7 @@ tab1_content = dbc.Card(
                          value=[],
                          ),
 
-        ], style={'min-height':'750px'}
+        ], style={'min-height': '750px'}
     ),
     className="mt-3",
 )
@@ -67,7 +67,7 @@ tab2_content = dbc.Card(
                 page_size=20
             )),
 
-        ], style={'min-height':'750px'}
+        ], style={'min-height': '750px'}
     ),
     className="mt-3",
 )
@@ -100,11 +100,10 @@ tab3_content = dbc.Card(
                 page_size=20
             ))
 
-        ], style={'min-height':'750px'}
+        ], style={'min-height': '750px'}
     ),
     className="mt-3",
 )
-
 
 tabs = dbc.Tabs(
     [
@@ -184,7 +183,7 @@ bootstrap_rows = html.Div(
 
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df))
+                    dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df), config={'displayModeBar': False})
                 ), width=5
             ),
 
@@ -231,7 +230,7 @@ def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
     accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
-    if len(local_auth_selected) > 0 :
+    if len(local_auth_selected) > 0:
         accident_df = accident_df[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
     print(f'Shape after filering: {accident_df.shape}')
     fig = utils.getmapfigure(accident_df, reset_zoom)
