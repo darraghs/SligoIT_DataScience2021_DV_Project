@@ -10,14 +10,14 @@ def get_html_tabs(accident_df):
             [
                 dbc.Label("X-Axis"),
                 dcc.Dropdown(id="graph_x_select",
-                             options=[{'label': b, 'value': b} for b in
+                             options=[{'label': b.replace('_', ' '), 'value': b} for b in
                                       accident_df.columns.tolist()],
                              multi=False,
                              value=[],
                              ),
                 dbc.Label("Y-Axis"),
                 dcc.Dropdown(id="graph_y_select",
-                             options=[{'label': b, 'value': b} for b in
+                             options=[{'label': b.replace('_', ' '), 'value': b} for b in
                                       accident_df.columns.tolist()],
                              multi=False,
                              value=[],
