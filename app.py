@@ -67,8 +67,9 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     if accident_df_copy is not None:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
         fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
-
-    stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
+        stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
+    else:
+        stats_data = get_crash_statistics(accident_df, lat_min, lat_max, lon_min, lon_max)
     return crash_data, stats_data, fig
 
 
