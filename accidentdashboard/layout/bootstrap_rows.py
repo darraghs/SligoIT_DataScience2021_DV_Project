@@ -1,19 +1,21 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
+from accidentdashboard import utils
 from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import app_tabs
-from accidentdashboard import utils
+
 
 # HTML Layout using Bootstrap
 
 def get_bootstrap_rows(accident_df):
-
     zoom_center = utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
 
-    no_loc_data = accident_df.drop(['location_easting_osgr', 'location_northing_osgr', 'longitude', 'latitude', 'latitude', 'local_authority_ons_district', 'lsoa_of_accident_location' ], axis = 1)
+    no_loc_data = accident_df.drop(
+        ['location_easting_osgr', 'location_northing_osgr', 'longitude', 'latitude', 'latitude',
+         'local_authority_ons_district', 'lsoa_of_accident_location'], axis=1)
     no_loc_data = no_loc_data.rename(columns={'date': 'month_of_year', 'time': 'hour_of_day'})
-    #no_loc_data.columns.tolist()
+    # no_loc_data.columns.tolist()
 
     bootstrap_rows = html.Div(
         [
@@ -84,17 +86,19 @@ def get_bootstrap_rows(accident_df):
 
                 dbc.Col(
                     html.Div(
-                        dcc.Graph(id='crash_map', figure=utils.getmapfigure(accident_df, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0]), config={'editable': False,
-                                                                                                  'displayModeBar': True,
-                                                                                                  'displaylogo': False,
-                                                                                                  'modeBarButtonsToRemove': [
-                                                                                                      'lasso2d',
-                                                                                                      'toImage',
-                                                                                                      'autoScale2d',
-                                                                                                      'resetScale2d',
-                                                                                                      'select2d'
-                                                                                                  ]
-                                                                                                  }, )
+                        dcc.Graph(id='crash_map',
+                                  figure=utils.getmapfigure(accident_df, zoom_center[1]['lat'], zoom_center[1]['lon'],
+                                                            zoom_center[0]), config={'editable': False,
+                                                                                     'displayModeBar': True,
+                                                                                     'displaylogo': False,
+                                                                                     'modeBarButtonsToRemove': [
+                                                                                         'lasso2d',
+                                                                                         'toImage',
+                                                                                         'autoScale2d',
+                                                                                         'resetScale2d',
+                                                                                         'select2d'
+                                                                                     ]
+                                                                                     }, )
                     ), width=5
                 ),
 
@@ -103,7 +107,9 @@ def get_bootstrap_rows(accident_df):
                 ]), width=5),
             ]),
             dbc.Row([
-                dbc.Col(html.Div("All data download from https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data"), width=10),
+                dbc.Col(html.Div(
+                    "All data download from https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data"),
+                        width=10),
             ]),
         ]
     )

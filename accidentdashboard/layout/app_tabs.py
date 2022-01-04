@@ -1,7 +1,6 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html, dash_table
 
-from accidentdashboard.data_lookup import accident_data_lookup
 
 def get_html_tabs(accident_df):
     # Tabs for visual content
