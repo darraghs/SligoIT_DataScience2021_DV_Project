@@ -119,7 +119,7 @@ def display_relayout_data(relayoutData):
         global accident_df
         accident_data = accident_df[accident_df['latitude'].between(lat_min, lat_max) &
                                     accident_df['longitude'].between(lon_min, lon_max)].copy()
-        print(f' {accident_df}')
+        print(f' {accident_df.shape}')
 
         print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
         return [lat_min, lat_max, lon_min, lon_max]
