@@ -68,10 +68,10 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     if triggered_id in ['crash_map.clickData']:
         crash_data = update_accident_table(marker_selection, accident_dfs[year_selected])
 
-    lat_min = accident_df_copy['latitude'].min()
-    lat_max = accident_df_copy['latitude'].max()
-    lon_min = accident_df_copy['longitude'].min()
-    lon_max = accident_df_copy['longitude'].max()
+    lat_min = accident_dfs[year_selected]['latitude'].min()
+    lat_max = accident_dfs[year_selected]['latitude'].max()
+    lon_min = accident_dfs[year_selected]['longitude'].min()
+    lon_max = accident_dfs[year_selected]['longitude'].max()
 
     if triggered_id in ['crash_map.relayoutData']:
         geo_data = display_relayout_data(relayoutData)
@@ -79,7 +79,6 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
             lat_min, lat_max, lon_min, lon_max = geo_data
 
     accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min, lon_max)
-
 
 
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
