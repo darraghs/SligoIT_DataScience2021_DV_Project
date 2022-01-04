@@ -23,6 +23,7 @@ dash_app.layout = dbc.Container(
 # Connect the map component
 @dash_app.callback(
     [Output('crash_table', 'data'),
+     Output('statistics_table', 'data'),
      Output(component_id='crash_map', component_property='figure')],
     [Input(component_id='select_year', component_property='value'),
      Input('severity-input', 'value'),
@@ -32,31 +33,49 @@ dash_app.layout = dbc.Container(
      ]
 )
 def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData):
+
+    fig = dash.no_update
+    crash_data = dash.no_update
+    stats_data = dash.no_update
+    accident_df_copy = None
+    lat_min, lat_max, lon_min, lon_max = None
+
     if year_selected is not None and len(severity) > 0:
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
-            fig = apply_map_fitlers(year_selected, severity, local_auth_selected, False)
-            return [], fig
-        elif triggered_id in ['crash_map.relayoutData']:
-            display_relayout_data(relayoutData)
+            accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, False)
+
         else:
-            return update_accident_table(marker_selection), dash.no_update
-    return dash.no_update, dash.no_update
+            crash_data = update_accident_table(marker_selection)
+
+    if triggered_id in ['crash_map.relayoutData']:
+        lat_min, lat_max, lon_min, lon_max = display_relayout_data(relayoutData)
+    else:
+        lat_min = accident_df_copy['latitude'].min()
+        lat_max = accident_df_copy['latitude'].max()
+        lon_min = accident_df_copy['longitude'].min()
+        lon_max = accident_df_copy['longitude'].max()
+
+    print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
+
+    if accident_df_copy is not None:
+        zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
+        fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
+
+    return crash_data, stats_data, fig
 
 
 def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
     global accident_df
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
-    accident_df = accident_df[accident_df['accident_severity'].isin(severities)].copy()
+    accident_df_copy = accident_df[accident_df['accident_severity'].isin(severities)].copy()
     if len(local_auth_selected) > 0:
-        accident_df = accident_df[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
-    print(f'Shape after filering: {accident_df.shape}')
+        accident_df_copy = accident_df_copy[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
+    print(f'Shape after filering: {accident_df_copy.shape}')
 
-    zoom_center = utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
-    fig = figure = utils.getmapfigure(accident_df, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
-    return fig
+    return accident_df_copy
 
 
 def update_accident_table(selection):
@@ -107,7 +126,6 @@ def update_accident_table(selection):
 
 
 # def vehicle_data(accident_index):
-
 def display_relayout_data(relayoutData):
     try:
         coords = relayoutData['mapbox._derived']['coordinates']
@@ -116,12 +134,6 @@ def display_relayout_data(relayoutData):
         lat_min = coords[2][1]
         lat_max = coords[1][1]
 
-        global accident_df
-        accident_data = accident_df[accident_df['latitude'].between(lat_min, lat_max) &
-                                    accident_df['longitude'].between(lon_min, lon_max)].copy()
-        print(f' {accident_df.shape}')
-
-        print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
         return [lat_min, lat_max, lon_min, lon_max]
     except:
         return []
