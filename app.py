@@ -60,7 +60,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
             redraw_map = True
 
     if graph_y_select is not None and graph_x_select is not None:
-        redraw_graph = False
+        redraw_graph = True
 
     if triggered_id in ['crash_map.clickData']:
         crash_data = update_accident_table(marker_selection)
