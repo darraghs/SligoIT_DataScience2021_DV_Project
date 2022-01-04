@@ -142,7 +142,9 @@ def camel_case(s):
     return ''.join([s[0].lower(), s[1:]])
 
 def get_graph_fig(accident_stats_df, x_axis, key):
-    graph_df = accident_stats_df.sort_values(by=[x_axis], ascending=True).copy()
+
+    graph_df = accident_stats_df[[x_axis, key]].copy()
+    #graph_df = accident_stats_df.sort_values(by=[x_axis], ascending=True).copy()
 
     for i in graph_df:
         if i in accident_data_lookup.accident_data_lookup.keys():
