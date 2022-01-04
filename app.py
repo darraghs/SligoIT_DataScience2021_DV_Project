@@ -54,7 +54,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
     if triggered_id in ['crash_map.relayoutData']:
         lat_min, lat_max, lon_min, lon_max = display_relayout_data(relayoutData)
-    else:
+    elif accident_df_copy is not None:
         lat_min = accident_df_copy['latitude'].min()
         lat_max = accident_df_copy['latitude'].max()
         lon_min = accident_df_copy['longitude'].min()
@@ -66,6 +66,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
         fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
 
+    stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
     return crash_data, stats_data, fig
 
 
@@ -140,6 +141,20 @@ def display_relayout_data(relayoutData):
         return [lat_min, lat_max, lon_min, lon_max]
     except:
         return []
+
+
+def get_crash_statistics(accident_stats_df, lat_min, lat_max, lon_min, lon_max):
+
+    filtered_geo_df = accident_stats_df[accident_stats_df['latitude'].between(lat_min,  lat_min) & accident_stats_df['longitude'].between(lon_min, lon_max)].copy()
+
+    labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
+    values = [len(filtered_geo_df[filtered_geo_df['accident_severity'] =='1']), len(filtered_geo_df[filtered_geo_df['accident_severity'] =='2']), len(filtered_geo_df[filtered_geo_df['accident_severity'] =='3'])]
+
+    DF_SIMPLE = pd.DataFrame({
+        'labels': labels,
+        'values': values
+    })
+    return DF_SIMPLE.to_dict('records')
 
 
 if __name__ == '__main__':
