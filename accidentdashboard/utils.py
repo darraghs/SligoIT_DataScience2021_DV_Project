@@ -143,16 +143,18 @@ def camel_case(s):
 
 def get_graph_fig(accident_stats_df, x_axis, key):
 
-    print(f' X-Axis: {x_axis}, key: {key}')
+    if type(x_axis) == 'str' and type(key) == 'str':
 
-    graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
+        print(f' X-Axis: {x_axis}, key: {key}')
 
-    for i in graph_df:
-        if i in accident_data_lookup.accident_data_lookup.keys():
-            lookup = accident_data_lookup.accident_data_lookup[i]
-            value = graph_df[i].values[0]
-            if value in lookup:
-                graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
+        graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
 
-    fig = px.histogram(graph_df, x=x_axis, color=key)
-    return fig
+        for i in graph_df:
+            if i in accident_data_lookup.accident_data_lookup.keys():
+                lookup = accident_data_lookup.accident_data_lookup[i]
+                value = graph_df[i].values[0]
+                if value in lookup:
+                    graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
+
+        fig = px.histogram(graph_df, x=x_axis, color=key)
+        return fig
