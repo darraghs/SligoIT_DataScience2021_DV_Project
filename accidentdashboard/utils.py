@@ -163,6 +163,7 @@ def get_graph_fig(accident_stats_df, x_axis, key):
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
                 value = graph_df[i].values[0]
+                print(f'i: {i}, value: {value}, lookup: {lookup} ')
                 if value in lookup:
                     graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
