@@ -159,6 +159,8 @@ def get_graph_fig(accident_stats_df, x_axis, key):
 
         graph_df = accident_stats_df[[new_x_axis, new_key]].sort_values(by=[new_x_axis, new_key])
 
+        print(f' Head: {graph_df.head()}')
+
         for i in graph_df:
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
