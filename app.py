@@ -2,8 +2,7 @@ import dash
 import dash_bootstrap_components as dbc
 import numpy
 import pandas as pd
-from dash import Dash, dcc, html, Input, Output, dash_table, \
-    callback_context  # pip install dash (version 2.0.0 or higher)
+from dash import Dash, Input, Output, callback_context  # pip install dash (version 2.0.0 or higher)
 
 from accidentdashboard import utils
 from accidentdashboard.data_lookup import accident_data_lookup
@@ -104,30 +103,29 @@ def update_accident_table(selection):
     return []
 
 
-#def vehicle_data(accident_index):
+# def vehicle_data(accident_index):
 
 
 @dash_app.callback(
-     Output('Coordinates', 'children'),
-     Input('crash_map', 'relayoutData'))
+    Output('Coordinates', 'children'),
+    Input('crash_map', 'relayoutData'))
 def display_relayout_data(relayoutData):
-     try:
-         print(f'Map Data: {relayoutData}')
-         coords = relayoutData['mapbox._derived']['coordinates']
-         lon_min = coords[0][0]
-         lon_max = coords[1][0]
-         lat_min = coords[2][1]
-         lat_max = coords[1][1]
+    try:
+        coords = relayoutData['mapbox._derived']['coordinates']
+        lon_min = coords[0][0]
+        lon_max = coords[1][0]
+        lat_min = coords[2][1]
+        lat_max = coords[1][1]
 
-         global accident_df
-         accident_index = selection["points"][0]["customdata"][0]
-         accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
+        global accident_df
+        accident_data = accident_df[accident_df['latitude'].between(lat_min, lat_max) &
+                                    accident_df['longitude'].between(lon_min, lon_max)].copy()
+        print(f' {accident_df}')
 
-
-         print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
-         return [lat_min, lat_max, lon_min, lon_max]
-     except:
-         return []
+        print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
+        return [lat_min, lat_max, lon_min, lon_max]
+    except:
+        return []
 
 
 if __name__ == '__main__':
