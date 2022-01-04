@@ -96,7 +96,7 @@ def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, l
     filter_accident_df = accident_dfs[year]
     print(f'Shape before filtering: {filter_accident_df.shape}')
     if severities is not None and len(severities) > 0:
-       new_severities =  [str(x) for x in range(severities + 1)]
+        new_severities =  [str(x) for x in range(severities + 1)]
 
         print(' avialable severities: '+filter_accident_df['accident_severity'].unique())
         filter_accident_df = filter_accident_df[filter_accident_df['accident_severity'].isin(new_severities)]
