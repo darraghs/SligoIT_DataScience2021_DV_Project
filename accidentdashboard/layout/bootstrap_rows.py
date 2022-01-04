@@ -94,7 +94,7 @@ def get_bootstrap_rows(accident_df):
                 ),
 
                 dbc.Col(html.Div([
-                    app_tabs.tabs,
+                    app_tabs.get_html_tabs(accident_df),
                 ]), width=5),
             ]),
             dbc.Row([
