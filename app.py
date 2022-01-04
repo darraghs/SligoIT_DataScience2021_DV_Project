@@ -96,7 +96,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
 def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
     global accident_dfs
-    filter_accident_df = accident_dfs[year]
+    filter_accident_df = accident_dfs[year].copy()
     print(f'Shape before filtering: {filter_accident_df.shape}')
     if severities is not None and len(severities) > 0:
         new_severties = []
