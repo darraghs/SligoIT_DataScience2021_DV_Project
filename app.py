@@ -62,7 +62,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
 
 
-    stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
+    stats_data = get_crash_statistics(accident_df_copy)
 
     if redraw_map:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
@@ -149,7 +149,7 @@ def display_relayout_data(relayoutData):
 
 
 def get_crash_statistics(accident_stats_df):
-    
+
     labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
     values = [len(accident_stats_df[accident_stats_df['accident_severity'] == 1]),
               len(accident_stats_df[accident_stats_df['accident_severity'] == 2]),
