@@ -143,9 +143,8 @@ def camel_case(s):
 
 def get_graph_fig(accident_stats_df, x_axis, key):
 
+    print(f' X-Axis: {x_axis}, key: {key}')
     if type(x_axis) == 'str' and type(key) == 'str':
-
-        print(f' X-Axis: {x_axis}, key: {key}')
 
         graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
 
