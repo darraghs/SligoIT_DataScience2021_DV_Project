@@ -162,11 +162,10 @@ def get_graph_fig(accident_stats_df, x_axis, key):
         for i in graph_df:
             if i in accident_data_lookup.accident_data_lookup.keys():
                 lookup = accident_data_lookup.accident_data_lookup[i]
-                if len(graph_df[i].values) > 0:
-                    value = graph_df[i].values[0]
-                    print(f'i: {i}, value: {value}, lookup: {lookup} ')
-                    if value in lookup:
-                        graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
+                value = graph_df[i].values[0]
+                print(f'i: {i}, value: {value}, lookup: {lookup} ')
+                if value in lookup:
+                    graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
         fig = px.histogram(graph_df, x=new_x_axis, color=new_key, labels={x_axis:new_x_axis.replace( '_' ,' ')})
         return fig
