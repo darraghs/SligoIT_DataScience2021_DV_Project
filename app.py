@@ -73,8 +73,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     if triggered_id in ['crash_map.clickData']:
         crash_data = update_accident_table(marker_selection, accident_dfs[year_selected])
 
-    accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min,
-                                         lon_max)
+    accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected)
 
     lat_min = accident_df_copy['latitude'].min()
     lat_max = accident_df_copy['latitude'].max()
@@ -101,7 +100,7 @@ def filter_geo(geo_df, lat_min, lat_max, lon_min, lon_max):
                                                                                                            lon_max)].copy()
     return filter_accident_df
 
-def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
+def apply_map_fitlers(year, severities, local_auth_selected):
     global accident_dfs
     filter_accident_df = accident_dfs[year].copy()
     print(f'Shape before filtering: {filter_accident_df.shape}')
