@@ -11,7 +11,7 @@ def get_html_tabs(accident_df):
                 dbc.Label("X-Axis"),
                 dcc.Dropdown(id="graph_x_select",
                              options=[{'label': b, 'value': b} for b in
-                                      accident_data_lookup.accident_data_lookup.keys()],
+                                      accident_df.columns.tolist()],
                              multi=False,
                              value=[],
                              ),
