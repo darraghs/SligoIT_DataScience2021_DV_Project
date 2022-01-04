@@ -53,7 +53,9 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
             crash_data = update_accident_table(marker_selection)
 
     if triggered_id in ['crash_map.relayoutData']:
-        lat_min, lat_max, lon_min, lon_max = display_relayout_data(relayoutData)
+        geo_data =  display_relayout_data(relayoutData)
+        if len( geo_data ) == 4:
+            lat_min, lat_max, lon_min, lon_max = geo_data
     elif accident_df_copy is not None:
         lat_min = accident_df_copy['latitude'].min()
         lat_max = accident_df_copy['latitude'].max()
