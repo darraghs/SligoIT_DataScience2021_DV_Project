@@ -28,12 +28,21 @@ def cleanDF(dataframe):
         dataframe['date'] = dataframe['date'].apply(getDate)
 
 
+
 def getaccidentdf(year):
     csvfile = f"data/dft-road-casualty-statistics-accident-{year}.csv"
     print(f'Getting CSV File: {csvfile}')
     accident_df = pd.read_csv(csvfile)
     cleanDF(accident_df)
     return accident_df
+
+
+def getvehicledf(year):
+    csvfile = f"data/dft-road-casualty-statistics-vehicle-${year}.csv"
+    print(f'Getting CSV File: {csvfile}')
+    vehicledf = pd.read_csv(csvfile)
+    cleanDF(vehicledf)
+    return vehicledf
 
 
 def getmapfigure(accident_df, lat=55.61817975121974, lon=-3.4849391102729896, zoom=4.722400193392954, reset_zoom=False):

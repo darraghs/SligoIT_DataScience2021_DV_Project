@@ -43,6 +43,7 @@ tab1_content = dbc.Card(
 tab2_content = dbc.Card(
     dbc.CardBody(
         [
+            html.Div(id='Coordinates'),
             html.Div(dash_table.DataTable(
                 id='statistics_table',
                 columns=[{"name": i, "id": i}

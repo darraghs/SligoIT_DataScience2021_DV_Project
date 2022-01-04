@@ -98,7 +98,7 @@ def get_bootstrap_rows(accident_df):
                 ]), width=5),
             ]),
             dbc.Row([
-                dbc.Col(html.Div(id='Coordinates'), width=10),
+                dbc.Col(html.Div("All data download from https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data"), width=10),
             ]),
         ]
     )
