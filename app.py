@@ -77,6 +77,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
                                          lon_max)
 
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
+    print("From DF Min Lat "+accident_df_copy['latitude'].min()+", Max Lat: "+accident_df_copy['latitude'].max()+ ", Min Lon:"+accident_df['longitude'].min()+", Max Lon: "+accident_df['longitude'].max())
 
     stats_data = get_crash_statistics(accident_df_copy)
 
