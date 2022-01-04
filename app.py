@@ -37,49 +37,51 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     fig = dash.no_update
     crash_data = dash.no_update
     stats_data = dash.no_update
-    accident_df_copy = None
     lat_min = accident_df['latitude'].min()
     lat_max = accident_df['latitude'].max()
     lon_min = accident_df['longitude'].min()
     lon_max = accident_df['longitude'].max()
 
-    if year_selected is not None and len(severity) > 0:
-
-        triggered_id = callback_context.triggered[0]['prop_id']
-        if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
-            accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, False)
-
-        else:
-            crash_data = update_accident_table(marker_selection)
+    redraw_map = False
+    triggered_id = callback_context.triggered[0]['prop_id']
 
     if triggered_id in ['crash_map.relayoutData']:
-        geo_data =  display_relayout_data(relayoutData)
-        if len( geo_data ) == 4:
+        geo_data = display_relayout_data(relayoutData)
+        if len(geo_data) == 4:
             lat_min, lat_max, lon_min, lon_max = geo_data
-    elif accident_df_copy is not None:
-        lat_min = accident_df_copy['latitude'].min()
-        lat_max = accident_df_copy['latitude'].max()
-        lon_min = accident_df_copy['longitude'].min()
-        lon_max = accident_df_copy['longitude'].max()
+
+    if year_selected is not None and len(severity) > 0:
+        if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
+            redraw_map = True
+
+    if triggered_id in ['crash_map.clickData']:
+        crash_data = update_accident_table(marker_selection)
+
+    accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min, lon_max)
 
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
 
-    if accident_df_copy is not None:
+
+    stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
+
+    if redraw_map:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
         fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
-        stats_data = get_crash_statistics(accident_df_copy, lat_min, lat_max, lon_min, lon_max)
-    else:
-        stats_data = get_crash_statistics(accident_df, lat_min, lat_max, lon_min, lon_max)
     return crash_data, stats_data, fig
 
 
-def apply_map_fitlers(year, severities, local_auth_selected, reset_zoom=False):
+def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
+
     global accident_df
     accident_df = utils.getaccidentdf(year)
     print(f'Shape before filering: {accident_df.shape}')
     accident_df_copy = accident_df[accident_df['accident_severity'].isin(severities)].copy()
     if len(local_auth_selected) > 0:
         accident_df_copy = accident_df_copy[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
+
+    accident_df_copy = accident_df_copy[
+        accident_df_copy['latitude'].between(lat_min, lat_max) & accident_df_copy['longitude'].between(lon_min,
+                                                                                                         lon_max)].copy()
     print(f'Shape after filering: {accident_df_copy.shape}')
 
     return accident_df_copy
@@ -147,11 +149,14 @@ def display_relayout_data(relayoutData):
 
 
 def get_crash_statistics(accident_stats_df, lat_min, lat_max, lon_min, lon_max):
-
-    filtered_geo_df = accident_stats_df[accident_stats_df['latitude'].between(lat_min,  lat_min) & accident_stats_df['longitude'].between(lon_min, lon_max)].copy()
+    filtered_geo_df = accident_stats_df[
+        accident_stats_df['latitude'].between(lat_min, lat_min) & accident_stats_df['longitude'].between(lon_min,
+                                                                                                         lon_max)].copy()
 
     labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
-    values = [len(filtered_geo_df[filtered_geo_df['accident_severity'] == 1 ]), len(filtered_geo_df[filtered_geo_df['accident_severity'] ==2]), len(filtered_geo_df[filtered_geo_df['accident_severity'] ==3])]
+    values = [len(filtered_geo_df[filtered_geo_df['accident_severity'] == 1]),
+              len(filtered_geo_df[filtered_geo_df['accident_severity'] == 2]),
+              len(filtered_geo_df[filtered_geo_df['accident_severity'] == 3])]
 
     DF_SIMPLE = pd.DataFrame({
         'labels': labels,
