@@ -33,12 +33,15 @@ dash_app.layout = dbc.Container(
      ]
 )
 def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData):
-
+    global accident_df
     fig = dash.no_update
     crash_data = dash.no_update
     stats_data = dash.no_update
     accident_df_copy = None
-    lat_min, lat_max, lon_min, lon_max = None
+    lat_min = accident_df['latitude'].min()
+    lat_max = accident_df['latitude'].max()
+    lon_min = accident_df['longitude'].min()
+    lon_max = accident_df['longitude'].max()
 
     if year_selected is not None and len(severity) > 0:
 
