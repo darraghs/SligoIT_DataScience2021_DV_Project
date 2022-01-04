@@ -58,10 +58,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     redraw_graph = False
     triggered_id = callback_context.triggered[0]['prop_id']
 
-    if triggered_id in ['crash_map.relayoutData']:
-        geo_data = display_relayout_data(relayoutData)
-        if len(geo_data) == 4:
-            lat_min, lat_max, lon_min, lon_max = geo_data
+
 
     if year_selected is not None and len(severity) > 0:
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
@@ -79,6 +76,12 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     lat_max = accident_df_copy['latitude'].max()
     lon_min = accident_df_copy['longitude'].min()
     lon_max = accident_df_copy['longitude'].max()
+
+    if triggered_id in ['crash_map.relayoutData']:
+        geo_data = display_relayout_data(relayoutData)
+        if len(geo_data) == 4:
+            lat_min, lat_max, lon_min, lon_max = geo_data
+            
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
     #print("From DF Min Lat "+str(accident_df_copy['latitude'].min())+", Max Lat: "+accident_df_copy['latitude'].max()+ ", Min Lon:"+accident_df_copy['longitude'].min()+", Max Lon: "+accident_df_copy['longitude'].max())
 
