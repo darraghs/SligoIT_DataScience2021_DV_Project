@@ -9,6 +9,10 @@ from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import bootstrap_rows
 
 accident_df = utils.getaccidentdf(2020)
+lat_min = accident_df['latitude'].min()
+lat_max = accident_df['latitude'].max()
+lon_min = accident_df['longitude'].min()
+lon_max = accident_df['longitude'].max()
 
 dash_app = Dash("UK Accident Dashboard", external_stylesheets=[dbc.themes.BOOTSTRAP], url_base_pathname='/dav2021/')
 
@@ -36,15 +40,15 @@ dash_app.layout = dbc.Container(
      ]
 )
 def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData, graph_x_select, graph_y_select):
-    global accident_df
+    global accident_df, lat_min, lat_max, lon_min, lon_max
     map_fig = dash.no_update
     crash_data = dash.no_update
     stats_data = dash.no_update
     graph_fig = dash.no_update
-    lat_min = accident_df['latitude'].min()
-    lat_max = accident_df['latitude'].max()
-    lon_min = accident_df['longitude'].min()
-    lon_max = accident_df['longitude'].max()
+    # lat_min = accident_df['latitude'].min()
+    # lat_max = accident_df['latitude'].max()
+    # lon_min = accident_df['longitude'].min()
+    # lon_max = accident_df['longitude'].max()
 
     redraw_map = False
     redraw_graph = False
