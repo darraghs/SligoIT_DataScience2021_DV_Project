@@ -157,7 +157,7 @@ def get_graph_fig(accident_stats_df, x_axis, key):
             new_key = mapping_date[key]
 
 
-        graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
+        graph_df = accident_stats_df[[new_x_axis, new_key]].sort_values(by=[new_x_axis, new_key])
 
         for i in graph_df:
             if i in accident_data_lookup.accident_data_lookup.keys():
