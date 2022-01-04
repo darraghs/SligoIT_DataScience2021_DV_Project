@@ -76,8 +76,12 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min,
                                          lon_max)
 
+    lat_min = accident_df_copy['latitude'].min()
+    lat_max = accident_df_copy['latitude'].max()
+    lon_min = accident_df_copy['longitude'].min()
+    lon_max = accident_df_copy['longitude'].max()
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
-    print("From DF Min Lat "+accident_df_copy['latitude'].min()+", Max Lat: "+accident_df_copy['latitude'].max()+ ", Min Lon:"+accident_df_copy['longitude'].min()+", Max Lon: "+accident_df_copy['longitude'].max())
+    #print("From DF Min Lat "+str(accident_df_copy['latitude'].min())+", Max Lat: "+accident_df_copy['latitude'].max()+ ", Min Lon:"+accident_df_copy['longitude'].min()+", Max Lon: "+accident_df_copy['longitude'].max())
 
     stats_data = get_crash_statistics(accident_df_copy)
 
