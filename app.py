@@ -28,15 +28,18 @@ dash_app.layout = dbc.Container(
      Input('severity-input', 'value'),
      Input('select_local_authority', 'value'),
      Input('crash_map', 'clickData'),
+     Input('crash_map', 'relayoutData')
      ]
 )
-def update_map(year_selected, severity, local_auth_selected, marker_selection, ):
+def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData):
     if year_selected is not None and len(severity) > 0:
 
         triggered_id = callback_context.triggered[0]['prop_id']
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
             fig = apply_map_fitlers(year_selected, severity, local_auth_selected, False)
             return [], fig
+        elif triggered_id in ['crash_map.relayoutData']:
+            display_relayout_data(relayoutData)
         else:
             return update_accident_table(marker_selection), dash.no_update
     return dash.no_update, dash.no_update
@@ -105,10 +108,6 @@ def update_accident_table(selection):
 
 # def vehicle_data(accident_index):
 
-
-@dash_app.callback(
-    Output('Coordinates', 'children'),
-    Input('crash_map', 'relayoutData'))
 def display_relayout_data(relayoutData):
     try:
         coords = relayoutData['mapbox._derived']['coordinates']
