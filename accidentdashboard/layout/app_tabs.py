@@ -22,7 +22,7 @@ def get_html_tabs(accident_df):
                              multi=False,
                              value=[],
                              ),
-                dcc.Graph(id='graph_viz')
+                dcc.Graph(id='graph_viz', figure={})
 
             ], style={'min-height': '750px'}
         ),
