@@ -107,7 +107,7 @@ def update_accident_table(selection):
 #def vehicle_data(accident_index):
 
 
- @dash_app.callback(
+@dash_app.callback(
      Output('Coordinates', 'children'),
      Input('crash_map', 'relayoutData'))
 def display_relayout_data(relayoutData):
