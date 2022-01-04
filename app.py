@@ -47,6 +47,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     lon_max = accident_df['longitude'].max()
 
     redraw_map = False
+    redraw_graph = False
     triggered_id = callback_context.triggered[0]['prop_id']
 
     if triggered_id in ['crash_map.relayoutData']:
@@ -58,6 +59,9 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
         if triggered_id in ['select_year.value', 'severity-input.value', 'select_local_authority.value']:
             redraw_map = True
 
+    if graph_y_select is not None and graph_x_select is not None:
+        redraw_graph = False
+
     if triggered_id in ['crash_map.clickData']:
         crash_data = update_accident_table(marker_selection)
 
@@ -68,7 +72,8 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
     stats_data = get_crash_statistics(accident_df_copy)
 
-    graph_fig = utils.get_graph_fig(accident_df_copy, graph_x_select, graph_y_select)
+    if redraw_graph:
+        graph_fig = utils.get_graph_fig(accident_df_copy, graph_x_select, graph_y_select)
 
     if redraw_map:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
