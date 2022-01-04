@@ -1,5 +1,6 @@
 from re import sub
 
+import dash
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -161,4 +162,6 @@ def get_graph_fig(accident_stats_df, x_axis, key):
         return fig
     except TypeError:
         pass
-    return []
+    except ValueError:
+        pass
+    return dash.no_update
