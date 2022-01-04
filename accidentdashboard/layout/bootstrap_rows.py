@@ -10,6 +10,11 @@ from accidentdashboard import utils
 def get_bootstrap_rows(accident_df):
 
     zoom_center = utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
+
+    no_loc_data = accident_df.drop(['location_easting_osgr', 'location_northing_osgr', 'longitude', 'latitude', 'latitude', 'local_authority_ons_district', 'lsoa_of_accident_location' ], axis = 1)
+    no_loc_data = no_loc_data.rename(columns={'date': 'month_of_year', 'time': 'hour_of_day'})
+    #no_loc_data.columns.tolist()
+
     bootstrap_rows = html.Div(
         [
             dbc.Row(html.Hr()),
@@ -94,7 +99,7 @@ def get_bootstrap_rows(accident_df):
                 ),
 
                 dbc.Col(html.Div([
-                    app_tabs.get_html_tabs(accident_df),
+                    app_tabs.get_html_tabs(no_loc_data),
                 ]), width=5),
             ]),
             dbc.Row([

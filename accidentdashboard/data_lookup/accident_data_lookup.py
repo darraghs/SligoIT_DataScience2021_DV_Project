@@ -69,7 +69,7 @@ accident_data_lookup = {
         7: 'Saturday',
     },
 
-    'date': {
+    'month_of_year': {
         1: 'January',
         2: 'February',
         3: 'March',
