@@ -3,6 +3,8 @@ import numpy as np
 import plotly.express as px
 from re import sub
 
+from accidentdashboard.data_lookup import accident_data_lookup
+
 
 def getHour(timestr):
     return timestr.split(':')[0]
@@ -138,3 +140,16 @@ def zoom_center(lons: tuple=None, lats: tuple=None,
 def camel_case(s):
     s = sub(r"(_|-)+", " ", s).title().replace(" ", "")
     return ''.join([s[0].lower(), s[1:]])
+
+def get_graph_fig(accident_stats_df, x_axis, key):
+    graph_df = accident_stats_df.sort_values(by=[x_axis], ascending=True).copy()
+
+    for i in graph_df:
+        if i in accident_data_lookup.accident_data_lookup.keys():
+            lookup = accident_data_lookup.accident_data_lookup[i]
+            value = graph_df[i].values[0]
+            if value in lookup:
+                graph_df[i] = lookup[value]
+
+    fig = px.histogram(graph_df, x=x_axis, color=key)
+    return fig

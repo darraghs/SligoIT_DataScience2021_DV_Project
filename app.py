@@ -24,19 +24,23 @@ dash_app.layout = dbc.Container(
 @dash_app.callback(
     [Output('crash_table', 'data'),
      Output('statistics_table', 'data'),
-     Output(component_id='crash_map', component_property='figure')],
+     Output(component_id='crash_map', component_property='figure'),
+     Output(component_id='graph_viz', component_property='figure')],
     [Input(component_id='select_year', component_property='value'),
      Input('severity-input', 'value'),
      Input('select_local_authority', 'value'),
      Input('crash_map', 'clickData'),
-     Input('crash_map', 'relayoutData')
+     Input('crash_map', 'relayoutData'),
+     Input('graph_x_select', 'value'),
+     Input('graph_y_select', 'value'),
      ]
 )
-def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData):
+def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData, graph_x_select, graph_y_select):
     global accident_df
-    fig = dash.no_update
+    map_fig = dash.no_update
     crash_data = dash.no_update
     stats_data = dash.no_update
+    graph_fig = dash.no_update
     lat_min = accident_df['latitude'].min()
     lat_max = accident_df['latitude'].max()
     lon_min = accident_df['longitude'].min()
@@ -64,10 +68,12 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
     stats_data = get_crash_statistics(accident_df_copy)
 
+    graph_fig = utils.get_graph_fig(accident_df_copy, graph_x_select, graph_y_select)
+
     if redraw_map:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
-        fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
-    return crash_data, stats_data, fig
+        map_fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
+    return crash_data, stats_data, map_fig, graph_fig
 
 
 def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
