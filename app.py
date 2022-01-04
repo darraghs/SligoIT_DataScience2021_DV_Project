@@ -8,7 +8,12 @@ from accidentdashboard import utils
 from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import bootstrap_rows
 
-accident_df = utils.getaccidentdf(2020)
+
+
+accident_dfs = {2020: utils.getaccidentdf(2020), 2019: utils.getaccidentdf(2019), 2018: utils.getaccidentdf(2018),
+                2017: utils.getaccidentdf(2017), 2016: utils.getaccidentdf(2016)}
+
+accident_df = accident_dfs[2020]
 lat_min = accident_df['latitude'].min()
 lat_max = accident_df['latitude'].max()
 lon_min = accident_df['longitude'].min()
@@ -67,7 +72,7 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
         redraw_graph = True
 
     if triggered_id in ['crash_map.clickData']:
-        crash_data = update_accident_table(marker_selection)
+        crash_data = update_accident_table(marker_selection, accident_dfs[year_selected])
 
     accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min, lon_max)
 
@@ -87,26 +92,26 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
 def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
 
-    global accident_df
-    accident_df = utils.getaccidentdf(year)
-    print(f'Shape before filering: {accident_df.shape}')
-    accident_df_copy = accident_df[accident_df['accident_severity'].isin(severities)].copy()
+    global accident_dfs
+    filter_accident_df = accident_dfs[year]
+    print(f'Shape before filering: {filter_accident_df.shape}')
+    filter_accident_df = filter_accident_df[filter_accident_df['accident_severity'].isin(severities)].copy()
     if len(local_auth_selected) > 0:
-        accident_df_copy = accident_df_copy[accident_df['local_authority_district'].isin(local_auth_selected)].copy()
+        filter_accident_df = filter_accident_df[filter_accident_df['local_authority_district'].isin(local_auth_selected)].copy()
 
-    accident_df_copy = accident_df_copy[
-        accident_df_copy['latitude'].between(lat_min, lat_max) & accident_df_copy['longitude'].between(lon_min,
+    filter_accident_df = filter_accident_df[
+        filter_accident_df['latitude'].between(lat_min, lat_max) & filter_accident_df['longitude'].between(lon_min,
                                                                                                          lon_max)].copy()
-    print(f'Shape after filering: {accident_df_copy.shape}')
+    print(f'Shape after filering: {filter_accident_df.shape}')
 
-    return accident_df_copy
+    return filter_accident_df
 
 
-def update_accident_table(selection):
+def update_accident_table(selection, year_accident_df):
     if selection is not None:
         global accident_df
         accident_index = selection["points"][0]["customdata"][0]
-        accident_data = accident_df[accident_df['accident_index'] == accident_index].copy()
+        accident_data = year_accident_df[year_accident_df['accident_index'] == accident_index].copy()
 
         if len(accident_data['accident_index']) > 0:
 
