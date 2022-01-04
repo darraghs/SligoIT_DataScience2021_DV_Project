@@ -94,10 +94,12 @@ def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, l
 
     global accident_dfs
     filter_accident_df = accident_dfs[year]
-    print(f'Shape before filering: {filter_accident_df.shape}')
+    print(f'Shape before filtering: {filter_accident_df.shape}')
     filter_accident_df = filter_accident_df[filter_accident_df['accident_severity'].isin(severities)].copy()
+    print(f'Shape after severity: {filter_accident_df.shape}')
     if len(local_auth_selected) > 0:
         filter_accident_df = filter_accident_df[filter_accident_df['local_authority_district'].isin(local_auth_selected)].copy()
+        print(f'Shape after local auth: {filter_accident_df.shape}')
 
     filter_accident_df = filter_accident_df[
         filter_accident_df['latitude'].between(lat_min, lat_max) & filter_accident_df['longitude'].between(lon_min,
