@@ -146,6 +146,8 @@ def get_graph_fig(accident_stats_df, x_axis, key):
     print(f' X-Axis: {x_axis} {isinstance(x_axis, str)}, key: {key}, {isinstance(key, str)}')
 
     try:
+
+        crash_colours = ['yellow', 'orange', 'red']
         graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
 
         for i in graph_df:
@@ -155,7 +157,7 @@ def get_graph_fig(accident_stats_df, x_axis, key):
                 if value in lookup:
                     graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
-        fig = px.histogram(graph_df, x=x_axis, color=key)
+        fig = px.histogram(graph_df, x=x_axis, color=key, color_discrete_sequence=crash_colours)
         return fig
     except TypeError:
         pass
