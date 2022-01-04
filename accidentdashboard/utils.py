@@ -1,7 +1,8 @@
-import pandas as pd
-import numpy as np
-import plotly.express as px
 from re import sub
+
+import numpy as np
+import pandas as pd
+import plotly.express as px
 
 from accidentdashboard.data_lookup import accident_data_lookup
 
@@ -28,7 +29,6 @@ def cleanDF(dataframe):
         dataframe['time'] = dataframe['time'].apply(getHour)
     if 'date' in dataframe.columns:
         dataframe['date'] = dataframe['date'].apply(getDate)
-
 
 
 def getaccidentdf(year):
@@ -76,11 +76,10 @@ def getmapfigure(accident_df, lat=55.61817975121974, lon=-3.4849391102729896, zo
         return fig
 
 
-
 # Take from https://stackoverflow.com/questions/63787612/plotly-automatic-zooming-for-mapbox-maps
-def zoom_center(lons: tuple=None, lats: tuple=None,
-                format: str='lonlat', projection: str='mercator',
-                width_to_height: float=2.0) -> (float, dict):
+def zoom_center(lons: tuple = None, lats: tuple = None,
+                format: str = 'lonlat', projection: str = 'mercator',
+                width_to_height: float = 2.0) -> (float, dict):
     """Finds optimal zoom and centering for a plotly mapbox.
     Must be passed (lons & lats) or lonlats.
     Temporary solution awaiting official implementation, see:
@@ -126,7 +125,7 @@ def zoom_center(lons: tuple=None, lats: tuple=None,
         margin = 1.2
         height = (maxlat - minlat) * margin * width_to_height
         width = (maxlon - minlon) * margin
-        lon_zoom = np.interp(width , lon_zoom_range, range(20, 0, -1))
+        lon_zoom = np.interp(width, lon_zoom_range, range(20, 0, -1))
         lat_zoom = np.interp(height, lon_zoom_range, range(20, 0, -1))
         zoom = round(min(lon_zoom, lat_zoom), 2)
     else:
@@ -136,24 +135,24 @@ def zoom_center(lons: tuple=None, lats: tuple=None,
 
     return zoom, center
 
+
 # From https://www.w3resource.com/python-exercises/string/python-data-type-string-exercise-96.php
 def camel_case(s):
     s = sub(r"(_|-)+", " ", s).title().replace(" ", "")
     return ''.join([s[0].lower(), s[1:]])
 
+
 def get_graph_fig(accident_stats_df, x_axis, key):
+    print(f' X-Axis: {x_axis} {isinstance(x_axis, str)}, key: {key}, {isinstance(key, str)}')
 
-    print(f' X-Axis: {x_axis} {type(x_axis)}, key: {key}, {type(key)}')
-    if isinstance(x_axis, str) and isinstance(key, str):
+    graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
 
-        graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
+    for i in graph_df:
+        if i in accident_data_lookup.accident_data_lookup.keys():
+            lookup = accident_data_lookup.accident_data_lookup[i]
+            value = graph_df[i].values[0]
+            if value in lookup:
+                graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
-        for i in graph_df:
-            if i in accident_data_lookup.accident_data_lookup.keys():
-                lookup = accident_data_lookup.accident_data_lookup[i]
-                value = graph_df[i].values[0]
-                if value in lookup:
-                    graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
-
-        fig = px.histogram(graph_df, x=x_axis, color=key)
-        return fig
+    fig = px.histogram(graph_df, x=x_axis, color=key)
+    return fig
