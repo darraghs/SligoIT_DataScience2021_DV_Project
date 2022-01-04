@@ -145,7 +145,7 @@ def camel_case(s):
 
 def get_graph_fig(accident_stats_df, x_axis, key):
 
-    mapping_date = {'month_of_year' : 'date', 'hour_of_day' : 'hour'}
+    mapping_date = {'month_of_year' : 'date', 'hour_of_day' : 'time'}
 
     print(f' X-Axis: {x_axis} {isinstance(x_axis, str)}, key: {key}, {isinstance(key, str)}')
     new_x_axis = x_axis
