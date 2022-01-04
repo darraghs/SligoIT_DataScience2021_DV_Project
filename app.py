@@ -83,16 +83,23 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
     #print("From DF Min Lat "+str(accident_df_copy['latitude'].min())+", Max Lat: "+accident_df_copy['latitude'].max()+ ", Min Lon:"+accident_df_copy['longitude'].min()+", Max Lon: "+accident_df_copy['longitude'].max())
 
-    stats_data = get_crash_statistics(accident_df_copy)
+    stats_data = get_crash_statistics(filter_geo(accident_df_copy, lat_min, lat_max, lon_min, lon_max))
 
     if redraw_graph:
-        graph_fig = utils.get_graph_fig(accident_df_copy, graph_x_select, graph_y_select)
+        graph_fig = utils.get_graph_fig(filter_geo(accident_df_copy, lat_min, lat_max, lon_min, lon_max), graph_x_select, graph_y_select)
 
     if redraw_map:
         zoom_center = utils.zoom_center(accident_df_copy['longitude'], accident_df_copy['latitude'])
         map_fig = utils.getmapfigure(accident_df_copy, zoom_center[1]['lat'], zoom_center[1]['lon'], zoom_center[0])
     return crash_data, stats_data, map_fig, graph_fig
 
+def filter_geo(geo_df, lat_min, lat_max, lon_min, lon_max):
+    filter_accident_df = geo_df.copy()
+    if lat_max is not None and lat_min is not None and lon_min is not None and lon_max is not None:
+        filter_accident_df = filter_accident_df[
+        filter_accident_df['latitude'].between(lat_min, lat_max) & filter_accident_df['longitude'].between(lon_min,
+                                                                                                           lon_max)].copy()
+    return filter_accident_df
 
 def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
     global accident_dfs
@@ -106,10 +113,7 @@ def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, l
     if len(local_auth_selected) > 0:
         filter_accident_df = filter_accident_df[
             filter_accident_df['local_authority_district'].isin(local_auth_selected)].copy()
-    elif lat_max is not None and lat_min is not None and lon_min is not None and lon_max is not None:
-        filter_accident_df = filter_accident_df[
-            filter_accident_df['latitude'].between(lat_min, lat_max) & filter_accident_df['longitude'].between(lon_min,
-                                                                                                               lon_max)].copy()
+
     print(f'Shape after filering: {filter_accident_df.shape}')
 
     return filter_accident_df
