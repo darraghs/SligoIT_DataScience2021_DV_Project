@@ -8,8 +8,6 @@ from accidentdashboard import utils
 from accidentdashboard.data_lookup import accident_data_lookup
 from accidentdashboard.layout import bootstrap_rows
 
-
-
 accident_dfs = {2020: utils.getaccidentdf(2020), 2019: utils.getaccidentdf(2019), 2018: utils.getaccidentdf(2018),
                 2017: utils.getaccidentdf(2017), 2016: utils.getaccidentdf(2016)}
 
@@ -44,7 +42,8 @@ dash_app.layout = dbc.Container(
      Input('graph_y_select', 'value'),
      ]
 )
-def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData, graph_x_select, graph_y_select):
+def update_map(year_selected, severity, local_auth_selected, marker_selection, relayoutData, graph_x_select,
+               graph_y_select):
     global accident_df, lat_min, lat_max, lon_min, lon_max
     map_fig = dash.no_update
     crash_data = dash.no_update
@@ -74,10 +73,10 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
     if triggered_id in ['crash_map.clickData']:
         crash_data = update_accident_table(marker_selection, accident_dfs[year_selected])
 
-    accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min, lon_max)
+    accident_df_copy = apply_map_fitlers(year_selected, severity, local_auth_selected, lat_min, lat_max, lon_min,
+                                         lon_max)
 
     print(f'Min Lat: {lat_min}, Max Lat: {lat_max}, Min Lon:{lon_min}, Max Lon: {lon_max}')
-
 
     stats_data = get_crash_statistics(accident_df_copy)
 
@@ -91,26 +90,21 @@ def update_map(year_selected, severity, local_auth_selected, marker_selection, r
 
 
 def apply_map_fitlers(year, severities, local_auth_selected, lat_min, lat_max, lon_min, lon_max):
-
     global accident_dfs
     filter_accident_df = accident_dfs[year]
     print(f'Shape before filtering: {filter_accident_df.shape}')
     if severities is not None and len(severities) > 0:
-
         new_severties = []
         for i in severities:
             new_severties.append(str(i))
-
-        print(' avialable severities: '+filter_accident_df['accident_severity'].unique())
         filter_accident_df = filter_accident_df[filter_accident_df['accident_severity'].isin(new_severties)]
-        print(f'severities: {new_severties}, type: {type(severities[0])} Shape after severity: {filter_accident_df.shape}')
     if len(local_auth_selected) > 0:
-        filter_accident_df = filter_accident_df[filter_accident_df['local_authority_district'].isin(local_auth_selected)].copy()
-        print(f'local auths : {local_auth_selected}, Shape after local auth: {filter_accident_df.shape}')
+        filter_accident_df = filter_accident_df[
+            filter_accident_df['local_authority_district'].isin(local_auth_selected)].copy()
 
     filter_accident_df = filter_accident_df[
         filter_accident_df['latitude'].between(lat_min, lat_max) & filter_accident_df['longitude'].between(lon_min,
-                                                                                                         lon_max)].copy()
+                                                                                                           lon_max)].copy()
     print(f'Shape after filering: {filter_accident_df.shape}')
 
     return filter_accident_df
@@ -178,11 +172,10 @@ def display_relayout_data(relayoutData):
 
 
 def get_crash_statistics(accident_stats_df):
-
     labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
-    values = [len(accident_stats_df[accident_stats_df['accident_severity'] == 1]),
-              len(accident_stats_df[accident_stats_df['accident_severity'] == 2]),
-              len(accident_stats_df[accident_stats_df['accident_severity'] == 3])]
+    values = [len(accident_stats_df[accident_stats_df['accident_severity'] == '1']),
+              len(accident_stats_df[accident_stats_df['accident_severity'] == '2']),
+              len(accident_stats_df[accident_stats_df['accident_severity'] == '3'])]
 
     DF_SIMPLE = pd.DataFrame({
         'labels': labels,
