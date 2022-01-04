@@ -158,7 +158,7 @@ def get_graph_fig(accident_stats_df, x_axis, key):
                 if value in lookup:
                     graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
-        fig = px.histogram(graph_df, x=x_axis, color=key, color_discrete_sequence=crash_colours)
+        fig = px.histogram(graph_df, x=x_axis, color=key, labels={x_axis :x_axis.replace( '_' ,' ')})
         return fig
     except TypeError:
         pass
