@@ -146,16 +146,17 @@ def camel_case(s):
 def get_graph_fig(accident_stats_df, x_axis, key):
 
     mapping_date = {'month_of_year' : 'date', 'hour_of_day' : 'hour'}
-    if x_axis in mapping_date.keys:
-        x_axis = mapping_date[x_axis]
-    if key in mapping_date.keys():
-        key = mapping_date[key]
-        
+
     print(f' X-Axis: {x_axis} {isinstance(x_axis, str)}, key: {key}, {isinstance(key, str)}')
-
+    new_x_axis = x_axis
+    new_key = key
     try:
+        if x_axis in mapping_date.keys():
+            new_x_axis = mapping_date[x_axis]
+        if key in mapping_date.keys():
+            new_key = mapping_date[key]
 
-        crash_colours = ['yellow', 'orange', 'red']
+
         graph_df = accident_stats_df[[x_axis, key]].sort_values(by=[x_axis, key])
 
         for i in graph_df:
@@ -165,7 +166,7 @@ def get_graph_fig(accident_stats_df, x_axis, key):
                 if value in lookup:
                     graph_df[i].replace(accident_data_lookup.accident_data_lookup[i], inplace=True)
 
-        fig = px.histogram(graph_df, x=x_axis, color=key, labels={x_axis :x_axis.replace( '_' ,' ')})
+        fig = px.histogram(graph_df, x=new_x_axis, color=new_key, labels={x_axis:new_x_axis.replace( '_' ,' ')})
         return fig
     except TypeError:
         pass
