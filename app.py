@@ -151,7 +151,7 @@ def get_crash_statistics(accident_stats_df, lat_min, lat_max, lon_min, lon_max):
     filtered_geo_df = accident_stats_df[accident_stats_df['latitude'].between(lat_min,  lat_min) & accident_stats_df['longitude'].between(lon_min, lon_max)].copy()
 
     labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
-    values = [len(filtered_geo_df[filtered_geo_df['accident_severity'] =='1']), len(filtered_geo_df[filtered_geo_df['accident_severity'] =='2']), len(filtered_geo_df[filtered_geo_df['accident_severity'] =='3'])]
+    values = [len(filtered_geo_df[filtered_geo_df['accident_severity'] == 1 ]), len(filtered_geo_df[filtered_geo_df['accident_severity'] ==2]), len(filtered_geo_df[filtered_geo_df['accident_severity'] ==3])]
 
     DF_SIMPLE = pd.DataFrame({
         'labels': labels,
