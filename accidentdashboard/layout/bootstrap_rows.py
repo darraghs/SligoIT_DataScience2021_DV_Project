@@ -12,8 +12,8 @@ def get_bootstrap_rows(accident_df):
     zoom_center = utils.zoom_center(accident_df['longitude'], accident_df['latitude'])
 
     no_loc_data = accident_df.drop(
-        ['location_easting_osgr', 'location_northing_osgr', 'longitude', 'latitude', 'latitude',
-         'local_authority_ons_district', 'lsoa_of_accident_location'], axis=1)
+        ['accident_index', 'accident_reference', 'location_easting_osgr', 'location_northing_osgr', 'longitude',
+         'latitude', 'latitude', 'local_authority_ons_district', 'lsoa_of_accident_location'], axis=1)
     no_loc_data = no_loc_data.rename(columns={'date': 'month_of_year', 'time': 'hour_of_day'})
     # no_loc_data.columns.tolist()
 
@@ -109,7 +109,7 @@ def get_bootstrap_rows(accident_df):
             dbc.Row([
                 dbc.Col(html.Div(
                     "All data download from https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data"),
-                        width=10),
+                    width=10),
             ]),
         ]
     )
