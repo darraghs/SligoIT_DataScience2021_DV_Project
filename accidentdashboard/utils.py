@@ -67,9 +67,7 @@ def getmapfigure(accident_df, lat=55.61817975121974, lon=-3.4849391102729896, zo
         fig.update_layout()
         fig.update_mapboxes(center_lat=lat, center_lon=lon)
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
-        fig.update_traces(marker=dict(size=12,
-                                      line=dict(width=2,
-                                                color='DarkSlateGrey')),
+        fig.update_traces(marker=dict(size=12),
                           selector=dict(mode='markers'))
         return fig
     else:
@@ -77,9 +75,7 @@ def getmapfigure(accident_df, lat=55.61817975121974, lon=-3.4849391102729896, zo
         fig.update_layout(mapbox_style="open-street-map", mapbox_accesstoken=token)
         fig.update_layout(showlegend=False)
         fig.update_mapboxes(center_lat=lat, center_lon=lon)
-        fig.update_traces(marker=dict(size=12,
-                                      line=dict(width=2,
-                                                color='DarkSlateGrey')),
+        fig.update_traces(marker=dict(size=12,),
                           selector=dict(mode='markers'))
         fig.update_layout(margin={"r": 1, "t": 1, "l": 1, "b": 1})
         return fig
