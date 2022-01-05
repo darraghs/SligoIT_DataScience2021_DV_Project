@@ -185,10 +185,14 @@ def display_relayout_data(relayoutData):
 
 def get_crash_statistics(accident_stats_df):
     labels = ['Number of Fatal Accidents:', 'Number of Serious Accidents:', 'Number of Slight  Accidents:']
-    values = [len(accident_stats_df[accident_stats_df['accident_severity'] == '1']),
+    try:
+        values = [len(accident_stats_df[accident_stats_df['accident_severity'] == '1']),
               len(accident_stats_df[accident_stats_df['accident_severity'] == '2']),
               len(accident_stats_df[accident_stats_df['accident_severity'] == '3'])]
-
+    except TypeError:
+        values = [len(accident_stats_df[accident_stats_df['accident_severity'] == 1]),
+          len(accident_stats_df[accident_stats_df['accident_severity'] == 2]),
+          len(accident_stats_df[accident_stats_df['accident_severity'] == 3])]
     DF_SIMPLE = pd.DataFrame({
         'labels': labels,
         'values': values
